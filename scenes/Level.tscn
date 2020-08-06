@@ -1,0 +1,77 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://scenes/Register.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/VCR.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/Money.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/VHS_Group.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/UI.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/Level.gd" type="Script" id=6]
+[ext_resource path="res://scenes/Calendar.tscn" type="PackedScene" id=7]
+[ext_resource path="res://assets/TV.png" type="Texture" id=8]
+[ext_resource path="res://assets/bin_trash.png" type="Texture" id=9]
+[ext_resource path="res://assets/background.png" type="Texture" id=10]
+[ext_resource path="res://assets/bin_repairs.png" type="Texture" id=11]
+[ext_resource path="res://scenes/Clock.tscn" type="PackedScene" id=12]
+[ext_resource path="res://scenes/Bin.tscn" type="PackedScene" id=13]
+[ext_resource path="res://scenes/Customer.tscn" type="PackedScene" id=14]
+
+[node name="Level" type="Node2D"]
+script = ExtResource( 6 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 900.0
+margin_bottom = 201.0
+color = Color( 0.729412, 0.917647, 1, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Clock" parent="." instance=ExtResource( 12 )]
+position = Vector2( 660, 60 )
+
+[node name="Calendar" parent="." instance=ExtResource( 7 )]
+position = Vector2( 276, 60 )
+
+[node name="Customer" parent="." instance=ExtResource( 14 )]
+position = Vector2( -147, 132 )
+
+[node name="background" type="Sprite" parent="."]
+position = Vector2( 450, 300 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 10 )
+
+[node name="TV" type="Sprite" parent="."]
+position = Vector2( 126, 210 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 8 )
+
+[node name="VCR" parent="." instance=ExtResource( 2 )]
+position = Vector2( 150, 336 )
+scale = Vector2( 3, 3 )
+
+[node name="Register" parent="." instance=ExtResource( 1 )]
+position = Vector2( 789, 180 )
+scale = Vector2( 3, 3 )
+
+[node name="VHS_Group" parent="." instance=ExtResource( 4 )]
+
+[node name="Money" parent="." instance=ExtResource( 3 )]
+scale = Vector2( 3, 3 )
+
+[node name="UI" parent="." instance=ExtResource( 5 )]
+position = Vector2( 900, 0 )
+
+[node name="Bins" type="Node2D" parent="."]
+
+[node name="Bin_Returns" parent="Bins" instance=ExtResource( 13 )]
+position = Vector2( 378, 543 )
+
+[node name="Bin_Repairs" parent="Bins" instance=ExtResource( 13 )]
+position = Vector2( 579, 543 )
+texture = ExtResource( 11 )
+type = 1
+
+[node name="Bin_Trash" parent="Bins" instance=ExtResource( 13 )]
+position = Vector2( 780, 543 )
+texture = ExtResource( 9 )
+type = 2
