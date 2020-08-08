@@ -1,0 +1,57 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scenes/MenuButton.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/audio/song.ogg" type="AudioStream" id=2]
+[ext_resource path="res://scenes/MainMenu.gd" type="Script" id=3]
+[ext_resource path="res://assets/mockbuster_logo.png" type="Texture" id=4]
+[ext_resource path="res://assets/vhs_0.png" type="Texture" id=5]
+
+[node name="MainMenu" type="Node2D"]
+scale = Vector2( 3, 3 )
+script = ExtResource( 3 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+margin_right = 1200.0
+margin_bottom = 600.0
+color = Color( 0, 0.568627, 0.701961, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="mockbuster_logo" type="Sprite" parent="CanvasLayer"]
+position = Vector2( 600, 120 )
+scale = Vector2( 4, 4 )
+texture = ExtResource( 4 )
+
+[node name="PlayButton" parent="CanvasLayer" instance=ExtResource( 1 )]
+margin_top = 250.0
+margin_bottom = 270.0
+text = "PLAY"
+
+[node name="HowToButton" parent="CanvasLayer" instance=ExtResource( 1 )]
+text = "HOW TO PLAY"
+
+[node name="QuitButton" parent="CanvasLayer" instance=ExtResource( 1 )]
+visible = false
+margin_top = 450.0
+margin_bottom = 470.0
+text = "QUIT"
+
+[node name="vhs_0" type="Sprite" parent="CanvasLayer"]
+position = Vector2( 200, 400 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 5 )
+
+[node name="vhs_1" type="Sprite" parent="CanvasLayer"]
+position = Vector2( 1000, 400 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 5 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
+autoplay = true
+[connection signal="button_down" from="CanvasLayer/PlayButton" to="." method="_on_PlayButton_button_down"]
+[connection signal="button_down" from="CanvasLayer/HowToButton" to="." method="_on_HowToButton_button_down"]
+[connection signal="button_down" from="CanvasLayer/QuitButton" to="." method="_on_QuitButton_button_down"]

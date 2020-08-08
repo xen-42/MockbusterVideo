@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/ticking.wav-df8f282f3449e21402c0c5833f0a0d5b.sample"
+
+[deps]
+
+source_file="res://assets/audio/ticking.wav"
+dest_files=[ "res://.import/ticking.wav-df8f282f3449e21402c0c5833f0a0d5b.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

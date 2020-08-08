@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/font/SimpleFont.fnt" type="BitmapFont" id=1]
+[ext_resource path="res://assets/ui/menu_button.png" type="Texture" id=2]
+[ext_resource path="res://scenes/MenuButton.gd" type="Script" id=3]
+
+[node name="MenuButton" type="TextureButton"]
+pause_mode = 2
+margin_left = 450.0
+margin_top = 350.0
+margin_right = 550.0
+margin_bottom = 370.0
+rect_scale = Vector2( 3, 3 )
+texture_normal = ExtResource( 2 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_left = 1.0
+margin_top = 5.33
+margin_right = 99.0
+margin_bottom = 19.33
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 1, 0.607843, 0, 1 )
+text = "BUTTON"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="button_down" from="." to="." method="_on_MenuButton_button_down"]

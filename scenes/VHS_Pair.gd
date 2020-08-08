@@ -4,6 +4,9 @@ const global = preload("res://scripts/Global.gd")
 const VHS_scene = preload("res://scenes/VHS.tscn")
 const VHS_cover_scene = preload("res://scenes/VHS_Cover.tscn")
 
+# Need the VCR type for checking if vhs is in it
+const VCR = preload("res://scenes/VCR.gd")
+
 var vhs_0 = load("res://assets/vhs_0.png")
 var vhs_1 = load("res://assets/vhs_1.png")
 var vhs_2 = load("res://assets/vhs_2.png")
@@ -23,6 +26,7 @@ var child_VHS_cover = null
 var has_cover = true
 
 onready var tween = $Tween
+onready var bin_drop_sound = $BinDropSound
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -39,15 +43,16 @@ func _ready():
 	new_sprite.set_texture(texture)
 	self.add_child(new_sprite)
 	
-	child_VHS_cover = VHS_cover_scene.instance()
-	if VHS_type == global.BinTypeEnum.PURCHASE:
-		child_VHS_cover.purchase = true
-	elif VHS_type == global.BinTypeEnum.RENTAL:
-		child_VHS_cover.rental = true
-	else:
-		child_VHS_cover.date_month = due_month
-		child_VHS_cover.date_day = due_date
-	self.add_child(child_VHS_cover)
+	if has_cover:
+		child_VHS_cover = VHS_cover_scene.instance()
+		if VHS_type == global.BinTypeEnum.PURCHASE:
+			child_VHS_cover.purchase = true
+		elif VHS_type == global.BinTypeEnum.RENTAL:
+			child_VHS_cover.rental = true
+		else:
+			child_VHS_cover.date_month = due_month
+			child_VHS_cover.date_day = due_date
+		self.add_child(child_VHS_cover)
 	
 	connect("input_event", self, "_on_VHS_Pair_input_event")
 	connect("VHS_signal", get_node("/root/Level"), "_on_Level_VHS_signal")
@@ -64,15 +69,19 @@ func _on_stop_drag():
 	if bodies.size() > 0:
 		for body in bodies:
 			if body is Bin:
-				print("VHS put in bin %s" % body.type)
 				emit_signal("VHS_signal", body.type, VHS_type, is_rewound)
 
 				tween.interpolate_property(self, "modulate",
 					Color(1,1,1,1), Color(1,1,1,0), 0.4,
 					Tween.TRANS_EXPO, Tween.EASE_OUT)
-				tween.interpolate_callback(self, 0.5, "queue_free")
+				tween.interpolate_callback(self, 1, "queue_free") 
 				tween.start()
 				
 				self.input_pickable = false
-				
+				if body.type != Global.BinTypeEnum.PURCHASE:
+					bin_drop_sound.play()
 				get_parent().child_items.erase(self)
+			elif body is VCR:
+				print("Put VHS in VCR")
+				if not has_cover and VHS_type == global.BinTypeEnum.RETURN:
+					body.insert_vhs(self)

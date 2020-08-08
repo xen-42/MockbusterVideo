@@ -21,7 +21,7 @@ func _ready():
 	price = Global.prices[fee_type]
 	label.text = "%s\n($%.2f)" % [type_string, self.price]
 	reset()
-	connect("total_change", get_node("/root/Level/UI"), "_on_UI_total_change")
+	connect("total_change", get_node("/root/Level/GameScene/UI"), "_on_UI_total_change")
 
 func increase_count():
 	if count < 10:
@@ -40,8 +40,10 @@ func reset():
 	count_label.text = "%d" % count
 
 func _on_PlusButton_button_down():
+	$Click.play()
 	increase_count()
 
 func _on_MinusButton_button_down():
+	$Click.play()
 	decrease_count()
 

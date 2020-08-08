@@ -30,11 +30,13 @@ var coin_25 = load("res://assets/coin_quarter.png")
 var coin_10 = load("res://assets/coin_dime.png")
 var coin_5 = load("res://assets/coin_nickel.png")
 
+onready var drop_sound = $DropSound
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	rng.randomize()
 
-func create_bills(value):
+func make_pile(value):
 	ammount = value
 	var i = value 
 	i = add_bills(i, bill_20, 20)
@@ -45,6 +47,9 @@ func create_bills(value):
 	i = add_bills(i, coin_25, 0.25)
 	i = add_bills(i, coin_10, 0.10)
 	i = add_bills(i, coin_5, 0.05)
+
+func create_bills(value):
+	make_pile(value)
 	
 	self.input_pickable = true
 	
@@ -90,6 +95,7 @@ func _on_stop_drag():
 				print("Money put in register")
 				emit_signal("cash_signal", ammount) #ammount is written in cents
 				delete_bills()
+				drop_sound.play()
 
 func _on_start_drag():
 	Global.is_carrying_money = true

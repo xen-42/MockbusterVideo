@@ -1,5 +1,6 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
+[ext_resource path="res://assets/audio/money.wav" type="AudioStream" id=1]
 [ext_resource path="res://scenes/Money.gd" type="Script" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
@@ -14,3 +15,7 @@ script = ExtResource( 2 )
 shape = SubResource( 1 )
 
 [node name="Tween" type="Tween" parent="."]
+
+[node name="DropSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 1 )
+volume_db = 7.068

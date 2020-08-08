@@ -87,13 +87,19 @@ var exit_time = 0.8
 signal customer_cleared
 signal customer_ready
 
+onready var speech_label = $SpeechBubble/Label
+onready var speech_bubble = $SpeechBubble
+onready var speech_tween = $SpeechBubble/SpeechTween
+var speech_time = 2.4
+var speech_fade_time = 0.6
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	rng.randomize()
 	reset()
 	connect("customer_cleared", get_node("/root/Level"), "_on_Level_customer_cleared")
 	connect("customer_ready", get_node("/root/Level"), "_on_Level_customer_ready")
-
+	speech_bubble.visible = false
 	
 
 func randomize_character():
@@ -116,6 +122,7 @@ func randomize_character():
 		glasses_sprite.visible = false
 
 func enter():
+	speech_bubble.visible = false
 	tween.interpolate_property(self, "position",
 		self.position, mid_position, enter_time,
 		Tween.TRANS_QUAD, Tween.EASE_OUT)
@@ -136,7 +143,24 @@ func reset():
 	self.position = start_position
 	randomize_character()
 	emit_signal("customer_cleared")
+
+func speech(message):
+	speech_tween.stop(self)
 	
+	speech_bubble.visible = true
+	speech_label.text = message
+	speech_tween.interpolate_property(speech_bubble, "modulate",
+		Color(1, 1, 1, 0), Color(1, 1, 1, 1), speech_fade_time,
+		Tween.TRANS_EXPO, Tween.EASE_OUT)
+	speech_tween.interpolate_callback(self, speech_time, "speech_fade")
+	speech_tween.start()
+
+func speech_fade():
+	speech_tween.stop(self)
+	speech_tween.interpolate_property(speech_bubble, "modulate",
+		Color(1, 1, 1, 1), Color(1, 1, 1, 0), speech_fade_time,
+		Tween.TRANS_EXPO, Tween.EASE_IN)
+	speech_tween.start()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -28,13 +28,14 @@ func remove_cover():
 	# Have the cover move up and disappear
 	var end_position = Vector2(self.position.x, self.position.y - 40)
 	tween.interpolate_property(self, "position",
-		self.position, end_position, 1.2,
+		self.position, end_position, 0.8,
 		Tween.TRANS_EXPO, Tween.EASE_OUT)
 	tween.interpolate_property(self, "modulate",
-		Color(1,1,1,1), Color(1,1,1,0), 1,
+		Color(1,1,1,1), Color(1,1,1,0), 0.4,
 		Tween.TRANS_EXPO, Tween.EASE_OUT)
 	tween.interpolate_callback(self, 1.2, "queue_free")
 	tween.start()
+	$CoverSound.play()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

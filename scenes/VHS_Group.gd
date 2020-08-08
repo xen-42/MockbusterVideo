@@ -47,7 +47,8 @@ func create_order(current_month, current_day, number):
 		
 		var flag_late = false
 		if vhs.VHS_type != global.BinTypeEnum.PURCHASE and vhs.VHS_type != global.BinTypeEnum.RENTAL:
-			if rng.randi()%2:
+			# Only returns can be not rewound
+			if rng.randi()%2 and vhs.VHS_type == global.BinTypeEnum.RETURN:
 				vhs.is_rewound = false
 			else:
 				vhs.is_rewound = true
@@ -81,8 +82,8 @@ func create_order(current_month, current_day, number):
 			Tween.TRANS_EXPO, Tween.EASE_OUT)
 		tween.start()
 		
-		#if not vhs.is_rewound:
-			#expected_cost += Global.prices[Global.FEE_TYPE_ENUM.Rewind]
+		if not vhs.is_rewound:
+			expected_cost += Global.prices[Global.FEE_TYPE_ENUM.Rewind]
 		match vhs.VHS_type:
 			Global.BinTypeEnum.RENTAL:
 				expected_cost += Global.prices[Global.FEE_TYPE_ENUM.Rental]

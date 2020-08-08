@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/vcr_insert.wav-fc4a591a52cc68dc777f41942b6b9f39.sample"
+
+[deps]
+
+source_file="res://assets/audio/vcr_insert.wav"
+dest_files=[ "res://.import/vcr_insert.wav-fc4a591a52cc68dc777f41942b6b9f39.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
