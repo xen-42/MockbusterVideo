@@ -1,9 +1,10 @@
 extends Node2D
 
+var song = "song.ogg"
 var timer = 0
 
 func _ready():
-	pass 
+	SoundEffects.play(song)
 
 func _process(delta):
 	timer += delta
@@ -20,7 +21,7 @@ func _on_QuitButton_button_down():
 	get_tree().quit()
 
 func _on_HowToButton_button_down():
-	get_tree().change_scene("res://scenes/HowToScene.tscn")
+	pass
 
 func _on_PlayButton_button_down():
 	get_tree().change_scene("res://scenes/Level.tscn")
@@ -30,3 +31,6 @@ func _notification(what) -> void:
 			get_tree().paused = false
 	elif what == MainLoop.NOTIFICATION_WM_FOCUS_OUT:
 			get_tree().paused = true
+
+func _exit_tree():
+	SoundEffects.stop(song)

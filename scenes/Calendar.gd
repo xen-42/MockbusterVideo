@@ -38,7 +38,7 @@ func change_date(month, day):
 	tween.interpolate_callback(new_page, delta_t, "queue_free")
 	tween.start()
 	
-	$RipSound.play()
+	SoundEffects.play("paper_rip.wav")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

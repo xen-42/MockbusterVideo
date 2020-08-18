@@ -1,15 +1,31 @@
 extends Area2D
-onready var global_vars = get_node("/root/Global")
-onready var stream = preload("res://assets/audio/pick_up.wav")
+class_name Draggable
 
-var sound = AudioStreamPlayer2D.new()
+onready var collision_shape = $CollisionShape2D
 
 var is_dragging = false
 
+var max_x = 900
+var min_x = 0
+var max_y = 600
+var min_y = 0
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	sound.stream = stream
-	self.add_child(sound)
+	if collision_shape != null:
+		var shape = collision_shape.shape
+		
+		if shape is RectangleShape2D:
+			max_x -= shape.extents.x * self.scale.x
+			min_x += shape.extents.x * self.scale.x
+			max_y -= shape.extents.y * self.scale.y
+			min_y += shape.extents.y * self.scale.y
+		elif shape is CircleShape2D:
+			max_x -= shape.radius * self.scale.x
+			min_x += shape.radius * self.scale.x
+			max_y -= shape.radius * self.scale.y
+			min_y += shape.radius * self.scale.y
+	
 	pass # Replace with function body.
 
 #Functions to be overriden
@@ -20,7 +36,12 @@ func _on_start_drag():
 
 func _process(delta):
 	if is_dragging:
-		position = get_viewport().get_mouse_position()
+		# We want to stop it from going off screen though
+		var mouse_position = get_viewport().get_mouse_position()
+		var x = clamp(mouse_position.x, min_x, max_x)
+		var y = clamp(mouse_position.y, min_y, max_y)
+		
+		position = Vector2(x, y)
 
 func _unhandled_input(event):
 	# If no longer holding click, stop dragging
@@ -33,6 +54,6 @@ func _input_event(viewport, event, shape_idx):
 	if event is InputEventMouseButton and event.pressed and not Global.draggable_selected:
 		is_dragging = true
 		_on_start_drag()
-		if not sound.playing:
-			sound.play()
+		if not SoundEffects.is_playing("pick_up.wav"):
+			SoundEffects.play("pick_up.wav")
 		Global.draggable_selected = true # want to avoid dragging many items at once

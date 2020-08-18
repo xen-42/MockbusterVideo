@@ -1,10 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scenes/MenuButton.tscn" type="PackedScene" id=1]
-[ext_resource path="res://assets/audio/song.ogg" type="AudioStream" id=2]
 [ext_resource path="res://scenes/MainMenu.gd" type="Script" id=3]
 [ext_resource path="res://assets/mockbuster_logo.png" type="Texture" id=4]
-[ext_resource path="res://assets/vhs_0.png" type="Texture" id=5]
+[ext_resource path="res://assets/VHS/vhs_0.png" type="Texture" id=5]
 
 [node name="MainMenu" type="Node2D"]
 scale = Vector2( 3, 3 )
@@ -48,10 +47,6 @@ texture = ExtResource( 5 )
 position = Vector2( 1000, 400 )
 scale = Vector2( 3, 3 )
 texture = ExtResource( 5 )
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 2 )
-autoplay = true
 [connection signal="button_down" from="CanvasLayer/PlayButton" to="." method="_on_PlayButton_button_down"]
 [connection signal="button_down" from="CanvasLayer/HowToButton" to="." method="_on_HowToButton_button_down"]
 [connection signal="button_down" from="CanvasLayer/QuitButton" to="." method="_on_QuitButton_button_down"]

@@ -1,4 +1,5 @@
 extends Area2D
+class_name Register
 
 var drawer_stowed_y = 14
 var drawer_extended_y = 44
@@ -36,7 +37,7 @@ func open_drawer():
 		0.6, Tween.TRANS_BOUNCE, Tween.EASE_OUT)
 	
 	tween.start()
-	$Kaching.play()
+	SoundEffects.play("register.wav")
 
 func close_drawer():
 	drawer_open = false
@@ -60,7 +61,7 @@ func on_finish_transaction():
 		Tween.TRANS_EXPO, Tween.EASE_OUT)
 	tween.start()
 	
-	$Receipt.play()
+	SoundEffects.play("receipt.wav")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

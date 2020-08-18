@@ -1,10 +1,6 @@
-extends "res://scripts/Draggable.gd"
+extends Draggable
 
-onready var collision_shape = $CollisionShape2D
 onready var tween = $Tween
-
-# Need the register type for checking if money is in it
-const Register = preload("res://scenes/Register.gd")
 
 # Used for counting money and displaying bills
 var ammount = 0
@@ -21,16 +17,14 @@ var start_position = Vector2(537, 68)
 var end_position = Vector2(537, 280)
 
 # The textures for the money
-var bill_20 = load("res://assets/bill_20.png")
-var bill_10 = load("res://assets/bill_10.png")
-var bill_5 = load("res://assets/bill_5.png")
-var coin_2 = load("res://assets/coin_twoonie.png")
-var coin_1 = load("res://assets/coin_loonie.png")
-var coin_25 = load("res://assets/coin_quarter.png")
-var coin_10 = load("res://assets/coin_dime.png")
-var coin_5 = load("res://assets/coin_nickel.png")
-
-onready var drop_sound = $DropSound
+var bill_20 = load("res://assets/money/bill_20.png")
+var bill_10 = load("res://assets/money/bill_10.png")
+var bill_5 = load("res://assets/money/bill_5.png")
+var coin_2 = load("res://assets/money/coin_twoonie.png")
+var coin_1 = load("res://assets/money/coin_loonie.png")
+var coin_25 = load("res://assets/money/coin_quarter.png")
+var coin_10 = load("res://assets/money/coin_dime.png")
+var coin_5 = load("res://assets/money/coin_nickel.png")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -95,7 +89,7 @@ func _on_stop_drag():
 				print("Money put in register")
 				emit_signal("cash_signal", ammount) #ammount is written in cents
 				delete_bills()
-				drop_sound.play()
+				SoundEffects.play("money.wav")
 
 func _on_start_drag():
 	Global.is_carrying_money = true

@@ -1,4 +1,5 @@
 extends Area2D
+class_name VCR
 
 onready var rewind_sprite = $TV/RewindSprite
 onready var temp_vhs = $VCRNode/VHS
@@ -13,7 +14,7 @@ var cover_start_position = Vector2(0.5, 11.5)
 var cover_stop_position = Vector2(0.5, 9)
 
 var insert_time = 0.8
-var eject_time = 0.4
+var eject_time = 0.2
 var rewind_time = 1.2
 
 # Called when the node enters the scene tree for the first time.
@@ -24,22 +25,23 @@ func _ready():
 	temp_vhs.visible = false
 
 func rewind():
-	$RewindSound.play()
+	SoundEffects.play("rewind.wav")
 	rewind_sprite.visible = true
 	rewind_sprite.play()
 
 func stop_rewind():
-	$RewindSound.stop()
+	SoundEffects.stop("rewind.wav")
 	rewind_sprite.visible = false
 	rewind_sprite.stop()
 
 func insert_vhs(vhs):
-	$InsertSound.play()
+	SoundEffects.play("vcr_insert.wav")
 	stored_vhs = vhs
 	stored_vhs.visible = false
 	stored_vhs.input_pickable = false
 	
 	temp_vhs.visible = true
+	temp_vhs.texture = stored_vhs.vhs_sprite.texture
 	
 	# Move up cover, move in VHS, move down cover
 	tween.interpolate_property(temp_vhs, "position",
@@ -65,7 +67,7 @@ func close_cover():
 	tween.start()
 
 func eject_vhs():
-	$EjectSound.play()
+	SoundEffects.play("vcr_eject.wav")
 	# Move up cover, move out VHS, move down cover
 	tween.interpolate_property(temp_vhs, "position",
 		vhs_stored_position, vhs_start_position, eject_time,

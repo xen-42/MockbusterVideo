@@ -1,8 +1,9 @@
 extends Area2D
+class_name Bin
 
 export var texture = preload("res://assets/bin_returns.png")
 
-export(Global.BinTypeEnum) var type = Global.BinTypeEnum.RETURN
+export(Array, Global.ItemTypeEnum) var types = []
 
 onready var bin_sprite = $BinSprite
 

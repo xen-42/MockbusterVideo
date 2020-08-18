@@ -19,7 +19,7 @@ onready var cash_label = $GameScene/UI/ColorRect/CashLabel
 onready var loyalty_label = $GameScene/UI/ColorRect/LoyaltyLabel
 onready var transaction_button = $GameScene/UI/ColorRect/FeeContainer/EnterButton
 onready var money = $GameScene/Money
-onready var VHS = $GameScene/VHS_Group
+onready var order = $GameScene/Order
 onready var calendar = $GameScene/Calendar
 onready var register = $GameScene/Register
 
@@ -97,12 +97,21 @@ func _ready():
 	customer.enter()
 
 func _process(delta):
-	if treating_customer and VHS.child_items.size() == 0:
+	if treating_customer and order.child_items.size() == 0:
 		transaction_button.disabled = false
 		treating_customer = false
 
 func next_customer():
-	expected_cost = VHS.create_order(current_month, current_day, clamp(day_counter, 1, 5))
+	var expected_order = order.create_order(current_month, current_day, clamp(day_counter, 1, 5))
+	
+	var order_string = ""
+	expected_cost = 0
+	
+	for i in Global.ItemTypeEnum.values():
+		expected_cost += Global.prices[i] * expected_order[i]
+		order_string += "%s: %d\t" % [Global.ItemTypeEnum.keys()[i], expected_order[i]]
+	
+	print("Expected order: ", order_string)
 	print("Expected cost: ", expected_cost)
 	treating_customer = true
 	transaction_button.disabled = true
@@ -129,23 +138,29 @@ func _on_Level_cash_signal(ammount):
 	tween.interpolate_callback(self, 0.4, "customer_leave")
 	tween.start()
 
-func _on_Level_VHS_signal(bin_type, VHS_type, rewound):
-	print("Recieved VHS type %s in bin type %s, rewound = %s" % [VHS_type, bin_type, rewound])
-	# Put logic for VHS stuff
+func _on_Level_item_signal(bin_types, item_types):
+	var item_string = ""
+	for i in item_types:
+		item_string += Global.ItemTypeEnum.keys()[i] + " "
 	
+	var bin_string = ""
+	for i in bin_types:
+		bin_string += Global.ItemTypeEnum.keys()[i] + " "
+	
+	print("Received item type %sin bin type %s" % [item_string, bin_string])
+	# Put logic for VHS stuff
 	# Special logic for giving the wrong thing to the customer
-	if bin_type == Global.BinTypeEnum.PURCHASE:
-		if VHS_type != Global.BinTypeEnum.PURCHASE and VHS_type != Global.BinTypeEnum.RENTAL:
+	if bin_types.has(Global.ItemTypeEnum.PURCHASE):
+		if not item_types.has(Global.ItemTypeEnum.PURCHASE) and not item_types.has(Global.ItemTypeEnum.RENTAL):
 			customer.speech(give_away_vhs_text[rng.randi() % give_away_vhs_text.size()])
-			change_cash(-8.95, "Gave away VHS")
+			change_cash(-Global.prices(Global.ItemTypeEnum.PURCHASE), "Gave away VHS")
 	else:
-		if bin_type != VHS_type:
+		if not Global.array_intersect(bin_types, item_types):
 			change_cash(-5, "Wrong bin")
 		# Not giving VHS to customer
-		if VHS_type == Global.BinTypeEnum.PURCHASE or VHS_type == Global.BinTypeEnum.RENTAL:
+		if item_types.has(Global.ItemTypeEnum.PURCHASE) or item_types.has(Global.ItemTypeEnum.RENTAL):
 			customer.speech(took_away_vhs_text[rng.randi() % took_away_vhs_text.size()])
 			flag_bad_transaction = true
-
 
 func _on_Level_complete_purchase(purchase_total):
 	flag_customer_refusal = false

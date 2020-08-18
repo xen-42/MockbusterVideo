@@ -34,7 +34,7 @@ func _process(delta):
 			time = 0
 			large_hand.rotation = 0
 			small_hand.rotation = 0
-			$Ticking.play()
+			SoundEffects.play("ticking.wav")
 		else:
 			large_hand.rotation += large_hand_omega * delta
 			if large_hand.rotation > 2 * PI:
@@ -43,7 +43,7 @@ func _process(delta):
 			small_hand.rotation += small_hand_omega * delta
 			if small_hand.rotation > 2 * PI:
 				small_hand.rotation -= 2 * PI
-			$Ticking.stop()
+			SoundEffects.stop("ticking.wav")
 	else:
 		clock_pos.position.x = (0.5 * sin(6 * PI * time))
 

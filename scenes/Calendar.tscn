@@ -1,10 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://assets/calendar/calendar.png" type="Texture" id=1]
 [ext_resource path="res://assets/calendar/calendar_page.png" type="Texture" id=2]
 [ext_resource path="res://assets/font/SimpleFont.fnt" type="BitmapFont" id=3]
 [ext_resource path="res://scenes/Calendar.gd" type="Script" id=4]
-[ext_resource path="res://assets/audio/paper_rip.wav" type="AudioStream" id=5]
 
 [node name="Calendar" type="Node2D"]
 script = ExtResource( 4 )
@@ -49,7 +48,3 @@ __meta__ = {
 }
 
 [node name="Tween" type="Tween" parent="."]
-
-[node name="RipSound" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource( 5 )
-volume_db = 14.136

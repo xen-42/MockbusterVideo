@@ -1,13 +1,13 @@
 [gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scenes/UI.gd" type="Script" id=1]
-[ext_resource path="res://scenes/FeeCheckbox.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/font/SimpleFont.fnt" type="BitmapFont" id=3]
 [ext_resource path="res://scenes/Stocks.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/clipboard.png" type="Texture" id=5]
 [ext_resource path="res://assets/ui/button_0.png" type="Texture" id=6]
 [ext_resource path="res://scenes/EnterButton.gd" type="Script" id=7]
-[ext_resource path="res://assets/audio/click.wav" type="AudioStream" id=8]
+[ext_resource path="res://assets/clipboard_left.png" type="Texture" id=8]
+[ext_resource path="res://assets/clipboard_right.png" type="Texture" id=9]
 
 [node name="UI" type="Node2D"]
 script = ExtResource( 1 )
@@ -42,6 +42,28 @@ position = Vector2( 126, 189 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 5 )
 
+[node name="LeftButton" type="TextureButton" parent="ColorRect/FeeContainer"]
+margin_left = -4.0
+margin_top = 359.0
+margin_right = 36.0
+margin_bottom = 399.0
+rect_scale = Vector2( 2, 2 )
+texture_normal = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RightButton" type="TextureButton" parent="ColorRect/FeeContainer"]
+margin_left = 224.0
+margin_top = 359.0
+margin_right = 264.0
+margin_bottom = 399.0
+rect_scale = Vector2( 2, 2 )
+texture_normal = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="FeesLabel" type="Label" parent="ColorRect/FeeContainer"]
 margin_left = 84.0
 margin_top = 30.0
@@ -57,25 +79,6 @@ __meta__ = {
 
 [node name="FeeOptions" type="Node2D" parent="ColorRect/FeeContainer"]
 position = Vector2( 0, -10 )
-
-[node name="LateFee" parent="ColorRect/FeeContainer/FeeOptions" instance=ExtResource( 2 )]
-position = Vector2( 14, 84 )
-
-[node name="RewindFee" parent="ColorRect/FeeContainer/FeeOptions" instance=ExtResource( 2 )]
-position = Vector2( 15, 204 )
-fee_type = 1
-
-[node name="RepairFee" parent="ColorRect/FeeContainer/FeeOptions" instance=ExtResource( 2 )]
-position = Vector2( 15, 264 )
-fee_type = 2
-
-[node name="PurchaseFee" parent="ColorRect/FeeContainer/FeeOptions" instance=ExtResource( 2 )]
-position = Vector2( 15, 144 )
-fee_type = 4
-
-[node name="RentalFee" parent="ColorRect/FeeContainer/FeeOptions" instance=ExtResource( 2 )]
-position = Vector2( 15, 321 )
-fee_type = 5
 
 [node name="EnterButton" type="TextureButton" parent="ColorRect/FeeContainer"]
 anchor_right = 0.126437
@@ -110,7 +113,6 @@ color = Color( 0, 0, 0, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="EnterButtonSound" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource( 8 )
+[connection signal="button_down" from="ColorRect/FeeContainer/LeftButton" to="." method="_on_LeftButton_button_down"]
+[connection signal="button_down" from="ColorRect/FeeContainer/RightButton" to="." method="_on_RightButton_button_down"]
 [connection signal="button_down" from="ColorRect/FeeContainer/EnterButton" to="." method="_on_EnterButton_button_down"]

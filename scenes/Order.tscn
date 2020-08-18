@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/Order.gd" type="Script" id=2]
+
+[node name="Order" type="Node2D"]
+script = ExtResource( 2 )
+rewind_likelihood = 33
+late_likelihood = 70
+
+[node name="Tween" type="Tween" parent="."]

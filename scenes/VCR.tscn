@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://assets/vcr_top.png" type="Texture" id=1]
 [ext_resource path="res://assets/vcr_bottom.png" type="Texture" id=2]
@@ -9,10 +9,7 @@
 [ext_resource path="res://assets/rewind_0.png" type="Texture" id=7]
 [ext_resource path="res://assets/rewind_1.png" type="Texture" id=8]
 [ext_resource path="res://assets/rewind_3.png" type="Texture" id=9]
-[ext_resource path="res://assets/vhs_0.png" type="Texture" id=10]
-[ext_resource path="res://assets/audio/vcr_insert.wav" type="AudioStream" id=11]
-[ext_resource path="res://assets/audio/vcr_eject.wav" type="AudioStream" id=12]
-[ext_resource path="res://assets/audio/rewind.wav" type="AudioStream" id=13]
+[ext_resource path="res://assets/VHS/vhs_0.png" type="Texture" id=10]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 38, 18 )
@@ -60,15 +57,3 @@ position = Vector2( 0.5, 11.5 )
 texture = ExtResource( 3 )
 
 [node name="Tween" type="Tween" parent="VCRNode"]
-
-[node name="InsertSound" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource( 11 )
-volume_db = 24.0
-
-[node name="EjectSound" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource( 12 )
-volume_db = 24.0
-
-[node name="RewindSound" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource( 13 )
-volume_db = 18.951

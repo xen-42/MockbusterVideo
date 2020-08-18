@@ -1,9 +1,9 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://scenes/Register.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/VCR.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/Money.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scenes/VHS_Group.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/Order.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/UI.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/Level.gd" type="Script" id=6]
 [ext_resource path="res://scenes/Calendar.tscn" type="PackedScene" id=7]
@@ -16,6 +16,7 @@
 [ext_resource path="res://scenes/Customer.tscn" type="PackedScene" id=14]
 [ext_resource path="res://assets/mockbuster_logo.png" type="Texture" id=15]
 [ext_resource path="res://scenes/PauseMenu.gd" type="Script" id=16]
+[ext_resource path="res://assets/wall.png" type="Texture" id=18]
 [ext_resource path="res://scenes/MenuButton.tscn" type="PackedScene" id=19]
 
 [node name="Level" type="Node2D"]
@@ -26,13 +27,10 @@ pause_mode = 1
 
 [node name="BonusTween" type="Tween" parent="GameScene"]
 
-[node name="ColorRect" type="ColorRect" parent="GameScene"]
-margin_right = 900.0
-margin_bottom = 201.0
-color = Color( 0.729412, 0.917647, 1, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="Wall" type="Sprite" parent="GameScene"]
+position = Vector2( 450, 94.5 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 18 )
 
 [node name="Clock" parent="GameScene" instance=ExtResource( 12 )]
 position = Vector2( 660, 60 )
@@ -56,7 +54,7 @@ scale = Vector2( 3, 3 )
 position = Vector2( 789, 180 )
 scale = Vector2( 3, 3 )
 
-[node name="VHS_Group" parent="GameScene" instance=ExtResource( 4 )]
+[node name="Order" parent="GameScene" instance=ExtResource( 4 )]
 
 [node name="Money" parent="GameScene" instance=ExtResource( 3 )]
 scale = Vector2( 3, 3 )
@@ -68,16 +66,17 @@ position = Vector2( 900, 0 )
 
 [node name="Bin_Returns" parent="GameScene/Bins" instance=ExtResource( 13 )]
 position = Vector2( 378, 543 )
+types = [ 9 ]
 
 [node name="Bin_Repairs" parent="GameScene/Bins" instance=ExtResource( 13 )]
 position = Vector2( 579, 543 )
 texture = ExtResource( 11 )
-type = 1
+types = [ 3 ]
 
 [node name="Bin_Trash" parent="GameScene/Bins" instance=ExtResource( 13 )]
 position = Vector2( 780, 543 )
 texture = ExtResource( 9 )
-type = 2
+types = [ 7 ]
 
 [node name="Pause" type="Control" parent="."]
 pause_mode = 2

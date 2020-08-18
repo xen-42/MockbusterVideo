@@ -19,7 +19,7 @@ script = ExtResource( 5 )
 visible = false
 position = Vector2( -1.00974e-28, -28 )
 scale = Vector2( 1.5, 1.5 )
-type = 3
+types = [ 0, 2, 5, 11, 10 ]
 
 [node name="HeadSprite" type="Sprite" parent="."]
 position = Vector2( -1, -15 )

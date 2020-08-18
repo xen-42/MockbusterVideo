@@ -8,9 +8,44 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Area2D",
+"class": "Bin",
+"language": "GDScript",
+"path": "res://scenes/Bin.gd"
+}, {
+"base": "Area2D",
+"class": "Draggable",
+"language": "GDScript",
+"path": "res://scripts/Draggable.gd"
+}, {
+"base": "Draggable",
+"class": "Item",
+"language": "GDScript",
+"path": "res://scenes/items/Item.gd"
+}, {
+"base": "Area2D",
+"class": "Register",
+"language": "GDScript",
+"path": "res://scenes/Register.gd"
+}, {
+"base": "Area2D",
+"class": "VCR",
+"language": "GDScript",
+"path": "res://scenes/VCR.gd"
+}, {
+"base": "Item",
+"class": "VHS",
+"language": "GDScript",
+"path": "res://scenes/items/VHS.gd"
+} ]
 _global_script_class_icons={
-
+"Bin": "",
+"Draggable": "",
+"Item": "",
+"Register": "",
+"VCR": "",
+"VHS": ""
 }
 
 [application]
@@ -21,9 +56,9 @@ config/icon="res://icon.png"
 
 [autoload]
 
-Global="*res://scripts/Global.gd"
+Global="*res://global/Global.gd"
 BinTypeEnum="*res://scripts/BinTypeEnum.gd"
-ButtonClick="*res://scenes/ButtonClick.tscn"
+SoundEffects="*res://global/SoundEffects.tscn"
 
 [display]
 
