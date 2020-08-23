@@ -21,8 +21,9 @@ var rewind_time = 1.2
 func _ready():
 	rewind_sprite.speed_scale = 2
 	rewind_sprite.visible = false
-	
 	temp_vhs.visible = false
+	
+	Global.connect("enabled_changed", self, "_on_Global_enabled_changed")
 
 func rewind():
 	SoundEffects.play("rewind.wav")
@@ -85,7 +86,7 @@ func eject_vhs():
 func free_stored_vhs():
 	stored_vhs.visible = true
 	stored_vhs.input_pickable = true
-	stored_vhs.rotation = deg2rad(-90)
+	stored_vhs.set_rotation(deg2rad(-90))
 	stored_vhs.position = self.position + vhs_start_position * self.scale.y
 	
 	temp_vhs.visible = false
@@ -99,3 +100,7 @@ func process_vhs():
 		tween.interpolate_callback(self, rewind_time, "stop_rewind")
 		tween.interpolate_callback(self, rewind_time, "eject_vhs")
 		tween.start()
+
+func _on_Global_enabled_changed(type):
+	if type == Global.ItemTypeEnum.REWIND and not Global.enabled[Global.ItemTypeEnum.REWIND]:
+		queue_free()

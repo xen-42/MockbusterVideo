@@ -1,0 +1,54 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://scenes/customer/Body.gd" type="Script" id=1]
+[ext_resource path="res://assets/people/nose_2.png" type="Texture" id=2]
+[ext_resource path="res://assets/people/eyes_3.png" type="Texture" id=3]
+[ext_resource path="res://assets/people/head_3.png" type="Texture" id=4]
+[ext_resource path="res://assets/people/body_3.png" type="Texture" id=5]
+[ext_resource path="res://assets/people/ears_1.png" type="Texture" id=6]
+[ext_resource path="res://assets/people/hair_2.png" type="Texture" id=7]
+
+[node name="Body" type="Node2D"]
+position = Vector2( 0, 3 )
+script = ExtResource( 1 )
+shirt_colour = Color( 0.224755, 0.937991, 0.81122, 1 )
+pitch = 0.97645
+body_choice = 3
+ear_choice = 1
+hair_choice = 2
+head_choice = 3
+eye_choice = 3
+nose_choice = 2
+skin_choice = 7
+
+[node name="HeadSprite" type="Sprite" parent="."]
+self_modulate = Color( 0.878431, 0.694118, 0.517647, 1 )
+position = Vector2( 0, -16 )
+texture = ExtResource( 4 )
+
+[node name="HairSprite" type="Sprite" parent="."]
+self_modulate = Color( 0.352941, 0.152941, 0.160784, 1 )
+position = Vector2( 0, -27 )
+texture = ExtResource( 7 )
+
+[node name="EyesSprite" type="Sprite" parent="."]
+position = Vector2( -5.96046e-08, -16 )
+texture = ExtResource( 3 )
+
+[node name="EarsSprite" type="Sprite" parent="."]
+self_modulate = Color( 0.878431, 0.694118, 0.517647, 1 )
+position = Vector2( -2, -21 )
+texture = ExtResource( 6 )
+
+[node name="BodySprite" type="Sprite" parent="."]
+self_modulate = Color( 0.224755, 0.937991, 0.81122, 1 )
+position = Vector2( 4, 10 )
+texture = ExtResource( 5 )
+
+[node name="NoseSprite" type="Sprite" parent="."]
+self_modulate = Color( 0.878431, 0.694118, 0.517647, 1 )
+position = Vector2( -1, -20 )
+texture = ExtResource( 2 )
+
+[node name="BobTween" type="Tween" parent="."]
+[connection signal="tween_completed" from="BobTween" to="." method="_on_BobTween_tween_completed"]

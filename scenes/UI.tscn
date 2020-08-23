@@ -15,78 +15,73 @@ script = ExtResource( 1 )
 [node name="Tween" type="Tween" parent="."]
 
 [node name="ColorRect" type="ColorRect" parent="."]
-margin_right = 300.0
-margin_bottom = 600.0
+margin_right = 150.0
+margin_bottom = 300.0
 color = Color( 0.878431, 0.878431, 0.878431, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="CashStocks" parent="ColorRect" instance=ExtResource( 4 )]
-position = Vector2( 75, 63 )
-scale = Vector2( 2, 2 )
+position = Vector2( 38, 31 )
 counter_warning_threshold = 50
 
 [node name="LoyaltyStocks" parent="ColorRect" instance=ExtResource( 4 )]
-position = Vector2( 225, 63 )
-scale = Vector2( 2, 2 )
+position = Vector2( 112, 31 )
 stock_type = 0
 counter_warning_threshold = 50
 counter_danger_threshold = 20
 
 [node name="FeeContainer" type="Node2D" parent="ColorRect"]
-position = Vector2( 24, 189 )
+position = Vector2( 0, 80 )
 
 [node name="ClipboardSprite" type="Sprite" parent="ColorRect/FeeContainer"]
-position = Vector2( 126, 189 )
-scale = Vector2( 2, 2 )
+position = Vector2( 75, 110 )
 texture = ExtResource( 5 )
 
 [node name="LeftButton" type="TextureButton" parent="ColorRect/FeeContainer"]
-margin_left = -4.0
-margin_top = 359.0
-margin_right = 36.0
-margin_bottom = 399.0
-rect_scale = Vector2( 2, 2 )
+margin_left = 10.0
+margin_top = 195.0
+margin_right = 50.0
+margin_bottom = 235.0
 texture_normal = ExtResource( 8 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="RightButton" type="TextureButton" parent="ColorRect/FeeContainer"]
-margin_left = 224.0
-margin_top = 359.0
-margin_right = 264.0
-margin_bottom = 399.0
-rect_scale = Vector2( 2, 2 )
+margin_left = 124.0
+margin_top = 195.0
+margin_right = 164.0
+margin_bottom = 235.0
 texture_normal = ExtResource( 9 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="FeesLabel" type="Label" parent="ColorRect/FeeContainer"]
-margin_left = 84.0
-margin_top = 30.0
-margin_right = 116.0
-margin_bottom = 42.0
-rect_scale = Vector2( 3, 3 )
+margin_left = 13.0
+margin_top = 32.0
+margin_right = 77.0
+margin_bottom = 44.0
+rect_scale = Vector2( 2, 2 )
 custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color = Color( 0.0941176, 0.760784, 0, 1 )
 text = "Fees"
+align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="FeeOptions" type="Node2D" parent="ColorRect/FeeContainer"]
-position = Vector2( 0, -10 )
+position = Vector2( 15, 65 )
 
 [node name="EnterButton" type="TextureButton" parent="ColorRect/FeeContainer"]
 anchor_right = 0.126437
-margin_left = 69.0
-margin_top = 359.0
-margin_right = 139.0
-margin_bottom = 385.0
-rect_scale = Vector2( 2, 2 )
+margin_left = 43.0
+margin_top = 189.0
+margin_right = 113.0
+margin_bottom = 215.0
 disabled = true
 texture_normal = ExtResource( 6 )
 script = ExtResource( 7 )
@@ -107,8 +102,8 @@ __meta__ = {
 }
 
 [node name="ColorRect2" type="ColorRect" parent="."]
-margin_left = -3.0
-margin_bottom = 600.0
+margin_left = -1.0
+margin_bottom = 300.0
 color = Color( 0, 0, 0, 1 )
 __meta__ = {
 "_edit_use_anchors_": false

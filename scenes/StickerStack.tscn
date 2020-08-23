@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scenes/items/Sticker.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/sticker/sticker_stack.png" type="Texture" id=2]
+[ext_resource path="res://scenes/StickerStack.gd" type="Script" id=3]
+
+[node name="StickerStack" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="StickerStackSprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+
+[node name="Sticker" parent="." instance=ExtResource( 1 )]
+position = Vector2( 0, -1 )
+scale = Vector2( 1, 1 )
+z_index = 0

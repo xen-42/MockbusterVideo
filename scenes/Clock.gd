@@ -1,13 +1,16 @@
 extends Node2D
 
-export var day_length = 60
+export var seconds_per_hour = 0.5
+export var opening_time = 9
+export var closing_time = 17
 
 var time = 0
 
 var freeze_time = false
 
-var large_hand_rotations = day_length / 2.0 #twice per day
-var small_hand_rotations = day_length / 24.0 
+var day_length = seconds_per_hour * 24
+var large_hand_rotations = day_length / 24.0 
+var small_hand_rotations = day_length / 2.0 
 
 var large_hand_omega = deg2rad(360 / large_hand_rotations)
 var small_hand_omega = deg2rad(360 / small_hand_rotations)
@@ -20,20 +23,21 @@ signal end_day
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	connect("end_day", get_node("/root/Level"), "_on_Level_end_day")
-	get_node("/root/Level").connect("start_day", self, "_on_Clock_start_day")
+	set_time(opening_time * seconds_per_hour)
+
+func set_time(new_time):
+	time = new_time
+	large_hand.rotation = fmod(large_hand_omega * new_time, 2 * PI)
+	small_hand.rotation = fmod(small_hand_omega * new_time, 2 * PI)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	time += delta
-		
 	if freeze_time == false:
-		if time > day_length:
+		time += delta
+		if time > closing_time * seconds_per_hour:
 			emit_signal("end_day")
-			freeze_time = true
-			time = 0
-			large_hand.rotation = 0
-			small_hand.rotation = 0
+			stop_clock()
+			set_time(closing_time * seconds_per_hour)
 			SoundEffects.play("ticking.wav")
 		else:
 			large_hand.rotation += large_hand_omega * delta
@@ -44,11 +48,16 @@ func _process(delta):
 			if small_hand.rotation > 2 * PI:
 				small_hand.rotation -= 2 * PI
 			SoundEffects.stop("ticking.wav")
-	else:
-		clock_pos.position.x = (0.5 * sin(6 * PI * time))
 
 func _on_Clock_start_day():
-	time = 0
-	large_hand.rotation = 0
-	small_hand.rotation = 0
+	set_time(opening_time * seconds_per_hour)
+	start_clock()
+
+func get_time():
+	return time * seconds_per_hour
+
+func start_clock():
 	freeze_time = false
+
+func stop_clock():
+	freeze_time = true

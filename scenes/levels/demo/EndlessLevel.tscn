@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/levels/Level.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/levels/demo/EndlessLevel.gd" type="Script" id=2]
+
+[node name="Level" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+_vhs = 100
+_popcorn = 0
+_repair = 50
+_rewind = 50
+_late = 50
+order_size = 6
+
+[node name="Sky" parent="GameScene/Window" index="0"]
+frame = 0

@@ -1,0 +1,54 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://assets/font/SimpleFont.fnt" type="BitmapFont" id=1]
+[ext_resource path="res://scenes/items/Sticker.gd" type="Script" id=2]
+[ext_resource path="res://assets/sticker/sticker.png" type="Texture" id=3]
+[ext_resource path="res://shader/DropShadow.shader" type="Shader" id=4]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 4 )
+shader_param/rotation = 0.0
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 6, 7 )
+
+[node name="Sticker" type="Area2D"]
+material = SubResource( 1 )
+scale = Vector2( 3, 3 )
+z_index = 5
+script = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( -1.19209e-07, 0 )
+shape = SubResource( 2 )
+
+[node name="StickerSprite" type="Sprite" parent="."]
+use_parent_material = true
+texture = ExtResource( 3 )
+
+[node name="DayLabel" type="Label" parent="."]
+margin_left = -5.0
+margin_top = -6.0
+margin_right = 35.0
+margin_bottom = 8.0
+rect_scale = Vector2( 0.66, 0.66 )
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "00"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MonthLabel" type="Label" parent="."]
+margin_left = -5.0
+margin_right = 35.0
+margin_bottom = 14.0
+rect_scale = Vector2( 0.66, 0.66 )
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "00"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="."]

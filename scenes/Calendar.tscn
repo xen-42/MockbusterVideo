@@ -6,25 +6,24 @@
 [ext_resource path="res://scenes/Calendar.gd" type="Script" id=4]
 
 [node name="Calendar" type="Node2D"]
+scale = Vector2( 3, 3 )
 script = ExtResource( 4 )
 
 [node name="CalendarSprite" type="Sprite" parent="."]
-scale = Vector2( 3, 3 )
+position = Vector2( -4, -3 )
 texture = ExtResource( 1 )
 
 [node name="CalendarPage" type="Node2D" parent="."]
 
 [node name="PageSprite" type="Sprite" parent="CalendarPage"]
-position = Vector2( 3, 7 )
-scale = Vector2( 3, 3 )
+position = Vector2( 4.76837e-07, 9.53674e-07 )
 texture = ExtResource( 2 )
 
 [node name="DayLabel" type="Label" parent="CalendarPage"]
-margin_left = -57.0
-margin_top = -15.0
-margin_right = -17.0
-margin_bottom = -3.0
-rect_scale = Vector2( 3, 3 )
+margin_left = -20.0
+margin_top = -8.0
+margin_right = 20.0
+margin_bottom = 4.0
 custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color = Color( 1, 0.678431, 0.12549, 1 )
 text = "02"
@@ -34,11 +33,10 @@ __meta__ = {
 }
 
 [node name="MonthLabel" type="Label" parent="CalendarPage"]
-margin_left = -57.0
-margin_top = 9.0
-margin_right = -17.0
-margin_bottom = 21.0
-rect_scale = Vector2( 3, 3 )
+margin_left = -20.0
+margin_top = 9.53674e-07
+margin_right = 20.0
+margin_bottom = 12.0
 custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color = Color( 1, 0.678431, 0.12549, 1 )
 text = "02"

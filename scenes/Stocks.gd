@@ -36,14 +36,20 @@ var lines = []
 var counted_transactions = 20
 var line_x_spacing = 1
 
+var update_queue = []
+var is_updating = false
+signal update_value_done
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var starting_value = 0
 	if stock_type == STOCK_TYPE.cash:
-		starting_value = Global.STARTING_CASH
+		starting_value = Global.cash
+		last_seven_days = Global.cash_record
 		label.text = "Cash"
 	elif stock_type == STOCK_TYPE.loyalty:
-		starting_value = Global.STARTING_LOYALTY
+		starting_value = Global.loyalty
+		last_seven_days = Global.loyalty_record
 		label.text = "Loyalty"
 	
 	# For counter, delta counter
@@ -70,8 +76,10 @@ func _ready():
 		self.add_child(new_line)
 		lines.append(new_line)
 	
-	add_daily_cash(starting_value)
+	_add_daily_cash(starting_value)
 	setup_lines()
+	
+	connect("tree_exiting", self, "_on_Stocks_tree_exiting")
 
 func set_gradient(array):
 	pass
@@ -111,7 +119,7 @@ func setup_lines():
 		lines[i].points = [p1, p2]
 		lines[i].gradient.colors = [get_colour(last_seven_days[i]), get_colour(last_seven_days[i+1])]
 
-func add_daily_cash(money):
+func _add_daily_cash(money):
 	# Change array of daily cash
 	for i in range(0, counted_transactions-1):
 		last_seven_days[i] = last_seven_days[i + 1]
@@ -126,10 +134,23 @@ func get_colour(val):
 		return warning_colour
 	else:
 		return good_colour
+
+func update_value(counter, message):
+	update_queue.append([counter, message])
+	if not is_updating:
+		_update_counter_label()
+
+func _update_counter_label():
+	var counter = update_queue[0][0]
+	var message = update_queue[0][1]
+	update_queue.remove(0)
 	
-func update_counter_label(counter, message):
+	_add_daily_cash(counter)
+	
 	var delta_counter = counter - old_counter
 	if delta_counter != 0:
+		is_updating = true
+		
 		var start_colour = Color(1,1,1,1)
 		var end_colour = Color(1,1,1,1)
 		
@@ -154,8 +175,10 @@ func update_counter_label(counter, message):
 		tween.interpolate_property(delta_counter_node, "modulate",
 			start_colour, end_colour, delta_fade_time,
 			Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+		# Once the text has faded out, updating will be done
+		tween.interpolate_callback(self, delta_fade_time, "_update_value_done")
 		tween.start()
-		
+	
 	old_counter = counter
 	
 	if counter < 0:
@@ -175,3 +198,17 @@ func update_counter_label(counter, message):
 		counter_label.add_color_override("font_color", warning_colour)
 	else:
 		counter_label.add_color_override("font_color", good_colour)
+
+func _update_value_done():
+	print("update value done")
+	if update_queue.size() == 0:
+		is_updating = false
+		emit_signal("update_value_done")
+	else:
+		_update_counter_label()
+
+func _on_Stocks_tree_exiting():
+	if stock_type == STOCK_TYPE.cash:
+		Global.cash_record = last_seven_days
+	elif stock_type == STOCK_TYPE.loyalty:
+		Global.loyalty_record = last_seven_days

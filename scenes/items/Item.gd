@@ -1,6 +1,8 @@
 extends Draggable
 class_name Item
 
+signal item_removed(item)
+
 export(Array, Global.ItemTypeEnum) var types = []
 onready var tween = $Tween
 
@@ -9,9 +11,10 @@ signal item_signal(bin_types, item_types)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	connect("item_signal", get_node("/root/Level"), "_on_Level_item_signal")
+	pass
 
 func _on_stop_drag():
+	._on_stop_drag()
 	var bodies = self.get_overlapping_areas()
 	if bodies.size() > 0:
 		for body in bodies:
@@ -25,7 +28,6 @@ func _on_stop_drag():
 				tween.start()
 				
 				self.input_pickable = false
-				if not body.types.has(Global.ItemTypeEnum.PURCHASE):
+				if not body.types.has(Global.ItemTypeEnum.SALE):
 					SoundEffects.play("bin_drop.wav")
-				if "child_items" in get_parent():
-					get_parent().child_items.erase(self)
+				emit_signal("item_removed", self)

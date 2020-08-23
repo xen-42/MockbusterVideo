@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/levels/demo/Day3.gd" type="Script" id=1]
+[ext_resource path="res://scenes/levels/Level.tscn" type="PackedScene" id=2]
+
+[node name="Level" instance=ExtResource( 2 )]
+script = ExtResource( 1 )
+_vhs = 100
+_popcorn = 0
+_return = 100
+_rental = 100
+_sale = 50
+_repair = 0
+_trash = 0
+_rewind = 0
+_late = 50

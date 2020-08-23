@@ -3,12 +3,17 @@ class_name Draggable
 
 onready var collision_shape = $CollisionShape2D
 
+onready var shader = preload("res://shader/DropShadow.shader")
+
 var is_dragging = false
 
 var max_x = 900
 var min_x = 0
 var max_y = 600
 var min_y = 0
+
+onready var default_material = self.material
+var dropshadow_material = ShaderMaterial.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -26,20 +31,24 @@ func _ready():
 			max_y -= shape.radius * self.scale.y
 			min_y += shape.radius * self.scale.y
 	
-	pass # Replace with function body.
+	dropshadow_material.shader = shader
+
 
 #Functions to be overriden
 func _on_stop_drag():
-	pass
+	self.z_index -= 1
+	self.material = default_material
+	
 func _on_start_drag():
-	pass
+	self.z_index += 1
+	self.material = dropshadow_material
 
 func _process(delta):
 	if is_dragging:
 		# We want to stop it from going off screen though
 		var mouse_position = get_viewport().get_mouse_position()
-		var x = clamp(mouse_position.x, min_x, max_x)
-		var y = clamp(mouse_position.y, min_y, max_y)
+		var x = clamp(mouse_position.x, min_x, max_x) / 3
+		var y = clamp(mouse_position.y, min_y, max_y) / 3
 		
 		position = Vector2(x, y)
 

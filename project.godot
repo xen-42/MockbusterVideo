@@ -14,6 +14,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/Bin.gd"
 }, {
+"base": "Node2D",
+"class": "Customer",
+"language": "GDScript",
+"path": "res://scenes/customer/Customer.gd"
+}, {
 "base": "Area2D",
 "class": "Draggable",
 "language": "GDScript",
@@ -24,10 +29,20 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/items/Item.gd"
 }, {
+"base": "Node2D",
+"class": "Level",
+"language": "GDScript",
+"path": "res://scenes/levels/Level.gd"
+}, {
 "base": "Area2D",
 "class": "Register",
 "language": "GDScript",
 "path": "res://scenes/Register.gd"
+}, {
+"base": "Draggable",
+"class": "Sticker",
+"language": "GDScript",
+"path": "res://scenes/items/Sticker.gd"
 }, {
 "base": "Area2D",
 "class": "VCR",
@@ -41,9 +56,12 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Bin": "",
+"Customer": "",
 "Draggable": "",
 "Item": "",
+"Level": "",
 "Register": "",
+"Sticker": "",
 "VCR": "",
 "VHS": ""
 }
@@ -69,5 +87,5 @@ window/stretch/aspect="keep"
 [rendering]
 
 quality/driver/driver_name="GLES2"
-environment/default_clear_color=Color( 0, 0, 0, 1 )
+environment/default_clear_color=Color( 0.627451, 0.627451, 0.627451, 1 )
 environment/default_environment="res://default_env.tres"

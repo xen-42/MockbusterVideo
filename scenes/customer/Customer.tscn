@@ -1,0 +1,74 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://scenes/customer/Customer.gd" type="Script" id=1]
+[ext_resource path="res://scenes/customer/Body.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/Order.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/Bin.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/font/SimpleFont.fnt" type="BitmapFont" id=5]
+[ext_resource path="res://assets/speech_bubble.png" type="Texture" id=10]
+
+[node name="Customer" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="Bin" parent="." instance=ExtResource( 4 )]
+visible = false
+position = Vector2( -1.00974e-28, -28 )
+scale = Vector2( 1.5, 1.5 )
+types = [ 0, 2, 5, 11, 10 ]
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="SpeechBubble" type="Node2D" parent="."]
+position = Vector2( -137, -52 )
+
+[node name="speech_bubble" type="Sprite" parent="SpeechBubble"]
+position = Vector2( 51, 17 )
+texture = ExtResource( 10 )
+
+[node name="SpeechTween" type="Tween" parent="SpeechBubble"]
+
+[node name="CharactersTween" type="Tween" parent="SpeechBubble"]
+
+[node name="Control" type="Control" parent="SpeechBubble"]
+margin_left = 2.0
+margin_right = 100.0
+margin_bottom = 29.0
+rect_clip_content = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="SpeechBubble/Control"]
+margin_left = 3.0
+margin_top = 1.70711
+margin_right = 143.0
+margin_bottom = 73.7071
+rect_scale = Vector2( 0.66, 0.66 )
+rect_clip_content = true
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "You shouldn't be 
+able to read this 
+at all. 
+Like for
+ real you 
+should not."
+align = 1
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Order" parent="." instance=ExtResource( 3 )]
+
+[node name="Body" parent="." instance=ExtResource( 2 )]
+position = Vector2( 0, 1.42107 )
+shirt_colour = Color( 0.852152, 0.661271, 0.586308, 1 )
+pitch = 0.96677
+ear_choice = 2
+hair_choice = 0
+head_choice = 2
+eye_choice = 1
+nose_choice = 0
+skin_choice = 2
+hair_tone_choice = 7

@@ -16,7 +16,6 @@
 [sub_resource type="StyleBoxEmpty" id=5]
 
 [node name="FeeUI" type="Node2D"]
-scale = Vector2( 2, 2 )
 script = ExtResource( 2 )
 
 [node name="Label" type="Label" parent="."]

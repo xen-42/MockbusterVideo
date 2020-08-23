@@ -9,7 +9,6 @@
 extents = Vector2( 9, 17 )
 
 [node name="VHS" type="Area2D"]
-scale = Vector2( 3, 3 )
 z_index = 5
 script = ExtResource( 1 )
 
@@ -19,19 +18,20 @@ shape = SubResource( 1 )
 [node name="Tween" type="Tween" parent="."]
 
 [node name="VHS_Sprite" type="Sprite" parent="."]
+use_parent_material = true
 texture = ExtResource( 2 )
 
 [node name="Cover_Sprite" type="Sprite" parent="."]
+use_parent_material = true
 texture = ExtResource( 3 )
 
 [node name="DayLabel" type="Label" parent="Cover_Sprite"]
 margin_left = -4.0
-margin_top = -0.666667
 margin_right = 12.0
-margin_bottom = 11.3333
+margin_bottom = 12.0
 rect_scale = Vector2( 0.66, 0.66 )
 custom_fonts/font = ExtResource( 4 )
-text = "01"
+text = "00"
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false
@@ -39,12 +39,12 @@ __meta__ = {
 
 [node name="MonthLabel" type="Label" parent="Cover_Sprite"]
 margin_left = -4.0
-margin_top = 5.33333
+margin_top = 6.33333
 margin_right = 12.0
-margin_bottom = 17.3333
+margin_bottom = 18.3333
 rect_scale = Vector2( 0.66, 0.66 )
 custom_fonts/font = ExtResource( 4 )
-text = "01"
+text = "00"
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false

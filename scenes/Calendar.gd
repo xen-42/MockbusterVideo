@@ -5,8 +5,8 @@ onready var day_label = $CalendarPage/DayLabel
 onready var calendar_page = $CalendarPage
 onready var tween = $Tween
 
-var delta_y = 80
-var delta_x = 80
+var delta_y = 30
+var delta_x = 30
 var delta_r = deg2rad(-60)
 var delta_t = 3
 
@@ -14,14 +14,17 @@ var delta_t = 3
 func _ready():
 	pass # Replace with function body.
 
-func set_date(month, day):
+func set_date(day, month):
 	month_label.text = "%02d" % month
 	day_label.text = "%02d" % day
 
-func change_date(month, day):
+func change_date(day, month):
 	var new_page = calendar_page.duplicate()
 	self.add_child(new_page)
-	set_date(month, day)
+	set_date(day, month)
+	
+	# Make sure the new page goes over other objects
+	new_page.z_index = 5
 	
 	var end_position = new_page.position
 	end_position.y += delta_y

@@ -7,6 +7,7 @@ var drawer_extended_y = 44
 onready var tween = $Tween
 onready var drawer = $register_drawer
 onready var receipt = $receipt
+onready var price_label = $PriceLabelNode2D/PriceLabel
 
 var receipt_start = Vector2(-4.5, 11.5)
 var receipt_end = Vector2(-4.5, -14.5)
@@ -62,6 +63,9 @@ func on_finish_transaction():
 	tween.start()
 	
 	SoundEffects.play("receipt.wav")
+
+func set_price_label(money):
+	price_label.text = "%.2f" % money
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
