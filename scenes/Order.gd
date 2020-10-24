@@ -85,7 +85,6 @@ func _create_item(item_types):
 	else:
 		push_error("Item is null")
 	
-	print(item)
 	emit_signal("new_item", item)
 	return item
 
@@ -111,7 +110,7 @@ func create_order(current_month, current_day, number):
 	for item_type in Global.ItemTypeEnum.values():
 		order[item_type] = 0
 	
-	var number_of_items = rng.randi_range(1, clamp(number, 1, 8))
+	var number_of_items = clamp(number + rng.randi_range(-1, 0), 1, 6)
 	
 	for i in range(0, number_of_items):
 		var item_types = []

@@ -12,13 +12,14 @@ func set_dialogue(d):
 
 # Overwritten so we can have custom behaviour when the character arrives
 func customer_ready():
-	speech(dialogue[dialogue_counter])
+	speech(dialogue[dialogue_counter], true)
 
 func _on_ScriptedCustomer_finished_talking():
-	print("done talking")
 	dialogue_counter += 1
-	if dialogue_counter < dialogue.size():
-		speech(dialogue[dialogue_counter])
+	if dialogue_counter < dialogue.size() - 1:
+		speech(dialogue[dialogue_counter], true)
+	elif dialogue_counter < dialogue.size():
+		speech(dialogue[dialogue_counter], false)
 	else:
 		speech_tween.interpolate_callback(self, speech_time, "exit")
 		speech_tween.start()

@@ -111,3 +111,5 @@ __meta__ = {
 [connection signal="button_down" from="ColorRect/FeeContainer/LeftButton" to="." method="_on_LeftButton_button_down"]
 [connection signal="button_down" from="ColorRect/FeeContainer/RightButton" to="." method="_on_RightButton_button_down"]
 [connection signal="button_down" from="ColorRect/FeeContainer/EnterButton" to="." method="_on_EnterButton_button_down"]
+[connection signal="mouse_entered" from="ColorRect/FeeContainer/EnterButton" to="ColorRect/FeeContainer/EnterButton" method="_on_EnterButton_mouse_entered"]
+[connection signal="mouse_exited" from="ColorRect/FeeContainer/EnterButton" to="ColorRect/FeeContainer/EnterButton" method="_on_EnterButton_mouse_exited"]

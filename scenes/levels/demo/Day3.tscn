@@ -6,7 +6,6 @@
 [node name="Level" instance=ExtResource( 2 )]
 script = ExtResource( 1 )
 _vhs = 100
-_popcorn = 0
 _return = 100
 _rental = 100
 _sale = 50

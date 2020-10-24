@@ -1,11 +1,14 @@
 extends Node2D
 
-export var seconds_per_hour = 0.5
-export var opening_time = 9
-export var closing_time = 17
+export var seconds_per_hour = 6.0
+export var opening_time = 9.0
+export var closing_time = 17.0
+
+var sunrise = 9.0
+var sunset = 17.0
 
 var time = 0
-
+var frozen_time = 0
 var freeze_time = false
 
 var day_length = seconds_per_hour * 24
@@ -31,6 +34,7 @@ func set_time(new_time):
 	small_hand.rotation = fmod(small_hand_omega * new_time, 2 * PI)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
+var _frozen_time = 0
 func _process(delta):
 	if freeze_time == false:
 		time += delta
@@ -48,13 +52,18 @@ func _process(delta):
 			if small_hand.rotation > 2 * PI:
 				small_hand.rotation -= 2 * PI
 			SoundEffects.stop("ticking.wav")
+	else:
+		frozen_time += delta
+		large_hand.rotation = large_hand_omega * (time + 0.05 * cos(10 * frozen_time))
 
 func _on_Clock_start_day():
-	set_time(opening_time * seconds_per_hour)
 	start_clock()
 
 func get_time():
 	return time * seconds_per_hour
+
+func get_daylight():
+	return ((time / seconds_per_hour) - sunrise) / (sunset - sunrise)
 
 func start_clock():
 	freeze_time = false

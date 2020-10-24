@@ -1,54 +1,73 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scenes/customer/Body.gd" type="Script" id=1]
 [ext_resource path="res://assets/people/hair_0.png" type="Texture" id=2]
-[ext_resource path="res://assets/people/ears_0.png" type="Texture" id=3]
+[ext_resource path="res://assets/people/eyes_3.png" type="Texture" id=3]
 [ext_resource path="res://assets/people/nose_2.png" type="Texture" id=4]
-[ext_resource path="res://assets/people/eyes_2.png" type="Texture" id=5]
+[ext_resource path="res://assets/people/ears_1.png" type="Texture" id=5]
 [ext_resource path="res://assets/people/body_3.png" type="Texture" id=6]
 [ext_resource path="res://assets/people/head_2.png" type="Texture" id=7]
+[ext_resource path="res://assets/people/jacket_1.png" type="Texture" id=8]
+[ext_resource path="res://assets/people/hat_0.png" type="Texture" id=9]
 
 [node name="Body" type="Node2D"]
-position = Vector2( 0, 1.83983 )
+position = Vector2( 0, 2.51733 )
+scale = Vector2( 1, 1.04112 )
 script = ExtResource( 1 )
 randomized = false
-shirt_colour = Color( 0.137255, 0.501961, 0.596078, 1 )
-pitch = 1.5
+skin_choice = 5
+shirt_colour = Color( 0.566946, 0.587151, 0.502221, 1 )
+pitch = 1.35305
 body_choice = 3
+ear_choice = 1
+hair_tone_choice = 9
 head_choice = 2
-eye_choice = 2
+eye_choice = 3
 nose_choice = 2
-skin_choice = 2
-hair_tone_choice = 2
+hat_colour = Color( 0.186814, 0.115882, 0.157376, 1 )
+jacket_choice = 1
+jacket_colour = Color( 0.375652, 0.300491, 0.233178, 1 )
 
 [node name="HeadSprite" type="Sprite" parent="."]
-self_modulate = Color( 0.85098, 0.568627, 0.392157, 1 )
+self_modulate = Color( 0.780392, 0.478431, 0.345098, 1 )
 position = Vector2( 0, -16 )
 texture = ExtResource( 7 )
 
 [node name="HairSprite" type="Sprite" parent="."]
-self_modulate = Color( 0.568627, 0.333333, 0.301961, 1 )
+self_modulate = Color( 0.47451, 0.376471, 0.262745, 1 )
 position = Vector2( 0, -27 )
 texture = ExtResource( 2 )
 
 [node name="EyesSprite" type="Sprite" parent="."]
 position = Vector2( -5.96046e-08, -16 )
-texture = ExtResource( 5 )
-
-[node name="EarsSprite" type="Sprite" parent="."]
-self_modulate = Color( 0.85098, 0.568627, 0.392157, 1 )
-position = Vector2( -2, -21 )
 texture = ExtResource( 3 )
 
+[node name="EarsSprite" type="Sprite" parent="."]
+self_modulate = Color( 0.780392, 0.478431, 0.345098, 1 )
+position = Vector2( 0, -21 )
+texture = ExtResource( 5 )
+
 [node name="BodySprite" type="Sprite" parent="."]
-self_modulate = Color( 0.137255, 0.501961, 0.596078, 1 )
+self_modulate = Color( 0.566946, 0.587151, 0.502221, 1 )
 position = Vector2( 4, 10 )
 texture = ExtResource( 6 )
 
 [node name="NoseSprite" type="Sprite" parent="."]
-self_modulate = Color( 0.85098, 0.568627, 0.392157, 1 )
+self_modulate = Color( 0.780392, 0.478431, 0.345098, 1 )
 position = Vector2( -1, -20 )
 texture = ExtResource( 4 )
 
 [node name="BobTween" type="Tween" parent="."]
+
+[node name="HatSprite" type="Sprite" parent="."]
+visible = false
+self_modulate = Color( 0.186814, 0.115882, 0.157376, 1 )
+position = Vector2( 0, -30 )
+texture = ExtResource( 9 )
+
+[node name="JacketSprite" type="Sprite" parent="."]
+visible = false
+self_modulate = Color( 0.375652, 0.300491, 0.233178, 1 )
+position = Vector2( 4, 7 )
+texture = ExtResource( 8 )
 [connection signal="tween_completed" from="BobTween" to="." method="_on_BobTween_tween_completed"]

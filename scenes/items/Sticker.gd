@@ -35,12 +35,12 @@ func _on_stop_drag():
 		for body in bodies:
 			if body is VHS:
 				if body.types.has(Global.ItemTypeEnum.RENTAL):
-					# Make the sticker parented onto the rental and make it no movable
-					print("Placed on VHS")
-					
+					# Make the sticker parented onto the rental and make it no movable					
 					body.types.append(Global.ItemTypeEnum.STICKERED)
 					body.day_label.text = "%02d" % day
 					body.month_label.text = "%02d" % month
+					
+					SoundEffects.play("place_sticker.wav")
 					
 					self.queue_free()
 					# return to stop it processing other colliding bodies.

@@ -27,6 +27,7 @@ func unpause():
 	visible = false
 
 func end_game(win):
+	print("End game")
 	pause()
 	continue_button.visible = false
 	end_game_node.visible = true

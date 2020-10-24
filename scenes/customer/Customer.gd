@@ -23,7 +23,8 @@ var ambivalent_purchase_text = [
 	"Understandable. Have a nice day.",
 	"Thank you.",
 	"Mhm.",
-	"Right."
+	"Right.",
+	"Cheers."
 ]
 var return_text = [
 	"Thanks.",
@@ -62,6 +63,10 @@ var greeting_text = [
 	"Just this.",
 	"Hey how's it going?"
 ]
+var bad_transaction_text = [
+	"Um... Okay?",
+	"Um... What?"
+]
 
 var start_position = Vector2(-50, 60)
 var mid_position = Vector2(167, 60)
@@ -86,12 +91,17 @@ var speech_time = 1
 var speech_fade_time = 0.6
 
 var text_counter = 0
-var line_counter = 1
+var line_counter = 0
 var line_lengths = []
 
 var hidden_character_count = 0
-var character_time = 0.02
-var pause_time = 0.05
+var character_time = 0.05
+var pause_time = 0.07
+
+var speech_bubble_scale = null
+var speech_bubble_width = 100
+var speech_bubble_start_position = null
+var speech_bubble_end_position = null
 
 # If the player should try asking the price again
 var flag_try_price_again = true
@@ -103,6 +113,7 @@ var _flag_exit = false
 var rng = RandomNumberGenerator.new()
 
 var _body_preset = null
+var is_dialogue = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -112,6 +123,10 @@ func _ready():
 	
 	if _body_preset != null:
 		_replace_body()
+	
+	speech_bubble_scale = speech_bubble.scale
+	speech_bubble_end_position = speech_bubble.position
+	speech_bubble_start_position = Vector2(speech_bubble_end_position.x + speech_bubble_width, speech_bubble_end_position.y)
 
 func set_body_preset(preset):
 	_body_preset = preset
@@ -144,6 +159,7 @@ func enter():
 		Tween.TRANS_QUAD, Tween.EASE_OUT)
 	tween.interpolate_callback(self, enter_time, "customer_ready")
 	tween.start()
+	SoundEffects.play("walk.wav")
 
 func customer_ready():
 	#Have customer say something when entering
@@ -163,73 +179,67 @@ func exit():
 			Tween.TRANS_QUAD, Tween.EASE_IN)
 		tween.interpolate_callback(self, exit_time, "reset")
 		tween.start()
+		#SoundEffects.play("walk.wav")
 
 func reset():
 	characters_tween.stop(self)
 	emit_signal("customer_cleared")
 	queue_free()
 
-func speech(message):
+func speech(message, dialogue = false):
 	speech_tween.stop(self)
 	
 	# Reset the last messages
 	text_counter = 0
-	line_counter = 1
-	hidden_character_count = 0
+	line_counter = 0
 	line_lengths = []
+	hidden_character_count = 0
 	
 	speech_label.set_visible_characters(0)
 	speech_label.lines_skipped = 0
 	
 	# stop revealing letters if its already over
 	characters_tween.stop(self)
-	 
-	var x = 0
-	var last_whitespace_index = 0
+	
 	var width = speech_label.get_rect().size.x * speech_label.rect_scale.x
-	var i = 0
+	var wrapped_text = Global.word_wrap(message, speech_label.get_font("SimpleFont"), width)
+	var last_length = wrapped_text.length()
 	
-	while i < message.length():
-		var c = message[i]
-
-		# If it goes past the width of the container, its a newline
-		var character_size = (speech_label.get_font("SimpleFont").get_char_size(ord(c))).x #* speech_label.rect_scale.x
-		
-		x += character_size
-		
-		if x >= width:
-			# If we haven't made it through a whole word, skip to the next whitespace
-			if last_whitespace_index == 0 or (line_lengths.size() > 0 and last_whitespace_index < line_lengths[line_lengths.size() - 1]):
-				last_whitespace_index = message.find(" ", last_whitespace_index + 1)
-			message[last_whitespace_index] = "\n"
-			line_lengths.append(last_whitespace_index - line_lengths.size())
-			x = 0
-			i = last_whitespace_index + 1
-		else:
-			if c == " ":
-				last_whitespace_index = i
-			i += 1
-	
-	line_lengths.append(message.length())
+	for i in range(0, wrapped_text.count("\n")):
+		var next_length = wrapped_text.left(last_length).find_last("\n")
+		line_lengths.insert(0, next_length)
+		last_length = next_length
 	
 	_is_talking = true
 	speech_bubble.visible = true
+	speech_label.text = wrapped_text
 	
-	speech_label.text = message
+	if not is_dialogue:
+		speech_label.lines_skipped = 0
+		speech_bubble.scale = Vector2(0, speech_bubble.scale.y)
+		speech_tween.interpolate_property(speech_bubble, "scale",
+			Vector2(0, speech_bubble.scale.y), speech_bubble_scale, speech_fade_time,
+			Tween.TRANS_ELASTIC, Tween.EASE_OUT
+		)
+		speech_bubble.position = speech_bubble_start_position
+		speech_tween.interpolate_property(speech_bubble, "position",
+			speech_bubble_start_position, speech_bubble_end_position, speech_fade_time,
+			Tween.TRANS_ELASTIC, Tween.EASE_OUT
+		)
 	
-	speech_label.lines_skipped = 0
-	speech_tween.interpolate_property(speech_bubble, "modulate",
-		Color(1, 1, 1, 0), Color(1, 1, 1, 1), speech_fade_time,
-		Tween.TRANS_EXPO, Tween.EASE_OUT)
-		
+	is_dialogue = dialogue
+	
 	_show_text_character()
 	
 	speech_tween.start()
 
 func _show_text_character():
 	# When switching dialogue the text counter can go over the size of the thing
+	# For some reason godot doesnt count newlines or spaces
+	var visible_characters = max(1 + text_counter - hidden_character_count - speech_label.text.count(" ", hidden_character_count, text_counter) - line_counter, 0)
+	
 	if text_counter < speech_label.text.length():
-		speech_label.set_visible_characters(text_counter - hidden_character_count)
+		speech_label.set_visible_characters(visible_characters)
 		var c = speech_label.text[text_counter].to_lower()
 		text_counter += 1
 		
@@ -244,33 +254,49 @@ func _show_text_character():
 		characters_tween.start()
 		
 		# Want to scroll only if its not all going to fit
-		if speech_label.lines_skipped + 2 < line_lengths.size() and speech_label.lines_skipped < line_lengths.size() - 3:
-			if text_counter >= line_lengths[speech_label.lines_skipped + 2]:
+		if c == "\n":
+			line_counter += 1
+			if line_counter > 2:
 				speech_label.lines_skipped += 1
-				hidden_character_count = line_lengths[speech_label.lines_skipped - 1]
-				speech_label.set_visible_characters(text_counter - hidden_character_count)
-
+				hidden_character_count = line_lengths[line_counter - 3]
+				# For some reason godot doesnt count newlines or spaces
+				visible_characters = max(1 + text_counter - hidden_character_count - speech_label.text.count(" ", hidden_character_count, text_counter) - line_counter, 0)
+				speech_label.set_visible_characters(visible_characters)
 	else:
-		print("stop talking")
+		speech_label.set_visible_characters(-1)
 		speech_tween.interpolate_callback(self, speech_time, "_stop_talking")
 		speech_tween.start()
 
 func _stop_talking():
 	_is_talking = false
-	speech_fade()
+	if not is_dialogue:
+		speech_fade()
 	
 	emit_signal("finished_talking")
 	if _flag_exit:
 		speech_tween.interpolate_callback(self, speech_time, "exit")
 		speech_tween.start()
 
+func _input(event):
+	if event is InputEventMouseButton:
+		if event.button_index == BUTTON_LEFT and event.pressed:
+			# Skip current dialogue
+			if is_dialogue:
+				_stop_talking()
+				speech_tween.stop(self)
+
 func speech_fade():
-	print("fade")
-	speech_tween.stop(self)
-	speech_tween.interpolate_property(speech_bubble, "modulate",
-		Color(1, 1, 1, 1), Color(1, 1, 1, 0), speech_fade_time,
-		Tween.TRANS_EXPO, Tween.EASE_IN)
-	speech_tween.start()
+	if not _is_talking:
+		speech_tween.stop(self)
+		
+		speech_tween.interpolate_property(speech_bubble, "scale",
+			speech_bubble_scale, Vector2(0, speech_bubble.scale.y), speech_fade_time / 2.0,
+			Tween.TRANS_QUAD, Tween.EASE_OUT
+		)
+		speech_tween.interpolate_property(speech_bubble, "position",
+			speech_bubble_end_position, speech_bubble_start_position, speech_fade_time / 2.0,
+			Tween.TRANS_QUAD, Tween.EASE_OUT
+		)
 
 func received_wrong_item():
 	speech(give_away_vhs_text[rng.randi() % give_away_vhs_text.size()])
@@ -287,11 +313,15 @@ func react_to_price(expected_price, demanded_price, flag_bad_transaction):
 	var message = get_random_entry(ambivalent_purchase_text)
 	var reaction = Global.CustomerReaction.ACCEPT
 	
+	# Precision really sucks here (round to nearest nickel)
+	expected_price = stepify(expected_price, 0.05)
+	demanded_price = stepify(demanded_price, 0.05)
+	
 	if demanded_price > expected_price and flag_try_price_again:
 		message = get_random_entry(wrong_price_text)
 		reaction = Global.CustomerReaction.RETRY
 		flag_try_price_again = false
-	else:
+	else:	
 		# If it's given away for free
 		if demanded_price != expected_price:
 			var absolute_difference = demanded_price - expected_price
@@ -312,6 +342,9 @@ func react_to_price(expected_price, demanded_price, flag_bad_transaction):
 		elif expected_price == 0:
 			message = get_random_entry(return_text)
 			reaction = Global.CustomerReaction.ACCEPT
+		#If its a bad transaction just change the message (unless its a retry)
+		if flag_bad_transaction:
+			message = get_random_entry(bad_transaction_text)
 	
 	speech(message)
 	return reaction

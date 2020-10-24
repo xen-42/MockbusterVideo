@@ -31,8 +31,6 @@ onready var overlay_tween = $Overlay/Tween
 var paused = false
 
 onready var ui = $UI
-onready var cash_label = $UI/ColorRect/CashLabel
-onready var loyalty_label = $UI/ColorRect/LoyaltyLabel
 onready var transaction_button = $UI/ColorRect/FeeContainer/EnterButton
 onready var money = $GameScene/Money
 onready var calendar = $GameScene/Calendar
@@ -42,12 +40,10 @@ onready var sticker_stack = $GameScene/StickerStack
 
 onready var sky = $GameScene/Window/Sky
 
-onready var customer = $GameScene/Customer
-
-onready var tween = $GameScene/BonusTween
-
 onready var game_scene = $GameScene
-onready var pause_menu = $Pause/CanvasLayer/PausePopup
+
+onready var shader = $GameScene/ScreenShader/Shader
+var customer = null
 
 var treating_customer = false
 var flag_customer_refusal = false
@@ -63,9 +59,19 @@ onready var customer_scene = preload("res://scenes/customer/Customer.tscn")
 var rng = RandomNumberGenerator.new()
 
 signal start_day
+signal win
+signal lose
+
+const song = "game_theme.ogg"
+const night_song = Global.night_song
+
+var day_number = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	if not SoundEffects.is_playing(night_song):
+		SoundEffects.play(night_song)
+	
 	rng.randomize()
 	
 	money.connect("cash_signal", self, "_on_Level_cash_signal")
@@ -106,13 +112,14 @@ func _ready():
 func next_customer(new_customer):
 	# Add new customer
 	customer = new_customer
-	print(customer.freeze_time_while_talking)
 	if customer.freeze_time_while_talking:
-		print("hmm")
 		clock.stop_clock()
 	else:
 		clock.start_clock()
-		
+	
+	if SoundEffects.is_playing(night_song):
+		SoundEffects.fade_out(night_song, 3, true)
+	
 	game_scene.add_child(customer)
 	
 	customer.set_order(_vhs, _dvd, _popcorn, _return, _rental, _sale, _normal, _repair, _trash, _rewind, _late)
@@ -154,24 +161,33 @@ func end_day():
 		flag_outro_customer_finished = true
 		_final_customer()
 	else:
+		SoundEffects.fade_in(night_song, 1)
+		
 		if cash >= Global.win_cash and loyalty >= Global.win_loyalty:
 			win()
-		else:
-			change_cash(-Global.daily_fee, "Daily fee")
-			
-			# If they deserve a bonus queue give_bonus
-			if flag_bonus:
-				print("Deserves bonus")
-				change_cash(Global.daily_bonus, "Bonus")
+		
+		change_cash(Global.daily_fee, "Daily")
+		change_loyalty(Global.daily_loyalty, "Daily")
+		
+		# If they deserve a bonus queue give_bonus
+		if flag_bonus:
+			change_cash(Global.daily_bonus, "Bonus")
+		
+		_end_day()
 		
 		ui.connect("UI_finished_updating", self, "fade_out")
-		
+
+# A function for overloading
+func _end_day():
+	pass
 
 func _process(delta):
 	var period = clock.seconds_per_hour * 12
-	var y = -(sky.frames.get_frame("default", 0).get_size().y - 68) * (clock.time - (8 * clock.seconds_per_hour)) / period
+	var y = -630+(sky.frames.get_frame("default", 0).get_size().y - 68) * (clock.time - (8 * clock.seconds_per_hour)) / period
 	
 	sky.position = Vector2(sky.position.x, y)
+	
+	shader.material.set_shader_param("time", clock.get_daylight())
 
 func _on_Level_order_complete():
 	transaction_button.disabled = false
@@ -183,10 +199,10 @@ func _on_Level_new_item(item):
 
 # After the customer has entered the scene
 func _on_Level_customer_ready():
-	change_cash(10, "test 1")
-	#change_cash(20, "test 2")
+	# Lets make order_size tied to loyalty
+	order_size = int(clamp(loyalty / (100.0 / 6.0), 1, 6))
 	
-	# Only want to increment the date when we're done with a customer
+	# Only want to increment the date when we're done with a customer	
 	var expected_order = customer.order.create_order(current_month, current_day, order_size)
 	
 	var order_string = ""
@@ -211,7 +227,6 @@ func _on_Level_customer_cleared():
 
 #After cash is put into the register
 func _on_Level_cash_signal(ammount):
-	print("recieved ", ammount)
 	change_cash(ammount, "")
 	ui.set_total(0)
 	register.on_finish_transaction()
@@ -231,23 +246,31 @@ func _on_Level_item_signal(bin_types, item_types):
 		bin_string += Global.ItemTypeEnum.keys()[i] + " "
 	
 	print("Received item type %sin bin type %s" % [item_string, bin_string])
-	# Put logic for VHS stuff
+	# Put logic for VHS stuff	
 	# Special logic for giving the wrong thing to the customer
 	if bin_types.has(Global.ItemTypeEnum.SALE):
+		# Logic for stickered rentals
+		if item_types.has(Global.ItemTypeEnum.RENTAL):
+			if not item_types.has(Global.ItemTypeEnum.STICKERED):
+				change_cash(-Global.prices[Global.ItemTypeEnum.STICKERED], "No sticker")
+				flag_bonus = false
 		# Giving away VHS
 		if not item_types.has(Global.ItemTypeEnum.SALE) and not item_types.has(Global.ItemTypeEnum.RENTAL) and item_types.has(Global.ItemTypeEnum.VHS):
 			customer.received_wrong_item()
 			change_cash(-Global.prices[Global.ItemTypeEnum.SALE], "Gave away VHS")
+			flag_bonus = false
 	else:
 		if not Global.array_intersect(bin_types, item_types):
 			change_cash(-5, "Wrong bin")
+			flag_bonus = false
 		# Not giving VHS to customer
-		if item_types.has(Global.ItemTypeEnum.SALE) or item_types.has(Global.ItemTypeEnum.RENTAL):
+		if item_types.has(Global.ItemTypeEnum.SALE) or item_types.has(Global.ItemTypeEnum.RENTAL) or item_types.has(Global.ItemTypeEnum.POPCORN):
 			customer.took_away_item()
 			for t in item_types:
 				expected_cost -= Global.prices[t]
 				print("Subtracted %.2f from price: type %s", Global.prices[t], Global.ItemTypeEnum.keys()[t])
 			flag_bad_transaction = true
+			flag_bonus = false
 
 # Happens after clicking enter button
 func _on_Level_complete_purchase(purchase_total):
@@ -262,19 +285,23 @@ func _on_Level_complete_purchase(purchase_total):
 			# If they are aable to retry just end this function call
 			return
 		Global.CustomerReaction.DISCOUNT:
-			delta_loyalty = 1
+			delta_loyalty = 5
 			loyalty_message = "Discount"
+			flag_bonus = false
 		Global.CustomerReaction.FREE:
 			flag_charge_money = false
-			delta_loyalty = 2
+			delta_loyalty = 10
 			loyalty_message = "Free"
+			flag_bonus = false
 		Global.CustomerReaction.OVERCHARGE:
-			delta_loyalty = -1
+			delta_loyalty = -5
 			loyalty_message = "Overcharge"
+			flag_bonus = false
 		Global.CustomerReaction.REFUSE:
 			flag_charge_money = false
-			delta_loyalty = -5
+			delta_loyalty = -10
 			loyalty_message = "Refusal"
+			flag_bonus = false
 	ui.reset()
 	change_loyalty(delta_loyalty, loyalty_message)
 	
@@ -296,7 +323,7 @@ func change_loyalty(change, message):
 	
 	Global.loyalty = loyalty
 	
-	if loyalty < 0:
+	if loyalty <= Global.lose_loyalty:
 		lose()
 
 func change_cash(change, message):
@@ -305,13 +332,13 @@ func change_cash(change, message):
 	
 	Global.cash = cash
 	
-	if cash < Global.lose_cash:
+	if cash <= Global.lose_cash:
 		lose()
 
 func lose():
 	print("You lose")
-	#pause_menu.end_game(false)
+	emit_signal("lose")
 
 func win():
 	print("You win")
-	#pause_menu.end_game(true)
+	emit_signal("win")

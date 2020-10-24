@@ -8,9 +8,14 @@ script = ExtResource( 2 )
 freeze_time_while_talking = true
 
 [node name="Body" parent="." index="4"]
-position = Vector2( 0, 0.135845 )
-shirt_colour = Color( 0.147171, 0.901765, 0.339066, 1 )
-pitch = 1.02446
-head_choice = 1
-skin_choice = 5
-hair_tone_choice = 4
+position = Vector2( 0, 0 )
+skin_choice = 11
+shirt_colour = Color( 0.37877, 0.257116, 0.61788, 1 )
+pitch = 0.922798
+body_choice = 3
+ear_choice = 1
+hair_tone_choice = 10
+eye_choice = 0
+hat_choice = 0
+hat_colour = Color( 0.258333, 0.176656, 0.460245, 1 )
+jacket_colour = Color( 0.374385, 0.358127, 0.124104, 1 )

@@ -83,6 +83,5 @@ func _on_stop_drag():
 	if bodies.size() > 0:
 		for body in bodies:
 			if body is VCR:
-				print("Put VHS in VCR")
 				if not has_cover and types.has(Global.ItemTypeEnum.RETURN):
 					body.insert_vhs(self)

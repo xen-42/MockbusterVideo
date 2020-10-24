@@ -42,7 +42,6 @@ func make_pile(value):
 	i = add_bills(i, coin_25, 0.25)
 	i = add_bills(i, coin_10, 0.10)
 	i = add_bills(i, coin_5, 0.05)
-	print(i)
 	
 	#Evenly space the coins out in a circle
 	var angle_spacing = 0
@@ -50,7 +49,7 @@ func make_pile(value):
 		angle_spacing = 2 * PI / child_sprites.size()
 	#var radius = clamp(4 * sqrt(child_sprites.size()), 8, 20)
 	var radius = 20
-	collision_shape.shape.radius = radius
+	collision_shape.shape.radius = radius + 6
 	
 	for j in range(0, child_sprites.size()):
 		var pos_r = radius * (pow(fmod(rng.randf(), 2), 1.0))
@@ -111,7 +110,6 @@ func _on_stop_drag():
 	if bodies.size() > 0:
 		for body in bodies:
 			if body is Register:
-				print("Money put in register")
 				emit_signal("cash_signal", ammount) #ammount is written in cents
 				delete_bills()
 				SoundEffects.play("money.wav")

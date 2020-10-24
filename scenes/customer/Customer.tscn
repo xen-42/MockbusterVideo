@@ -39,10 +39,12 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="SpeechBubble/Control"]
-margin_left = 3.0
-margin_top = 1.70711
-margin_right = 143.0
-margin_bottom = 73.7071
+anchor_top = -0.00543081
+anchor_bottom = -0.00543081
+margin_left = 1.81271
+margin_top = 2.33801
+margin_right = 147.813
+margin_bottom = 59.338
 rect_scale = Vector2( 0.66, 0.66 )
 rect_clip_content = true
 custom_fonts/font = ExtResource( 5 )
@@ -50,9 +52,7 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "You shouldn't be 
 able to read this 
 at all. 
-Like for
- real you 
-should not."
+"
 align = 1
 clip_text = true
 __meta__ = {
@@ -62,13 +62,17 @@ __meta__ = {
 [node name="Order" parent="." instance=ExtResource( 3 )]
 
 [node name="Body" parent="." instance=ExtResource( 2 )]
-position = Vector2( 0, 1.42107 )
-shirt_colour = Color( 0.852152, 0.661271, 0.586308, 1 )
-pitch = 0.96677
-ear_choice = 2
-hair_choice = 0
-head_choice = 2
-eye_choice = 1
-nose_choice = 0
+position = Vector2( 0, 0 )
 skin_choice = 2
+shirt_colour = Color( 0.587639, 0.416304, 0.367322, 1 )
+pitch = 1.15582
+body_choice = 3
+ear_choice = 1
+hair_choice = 6
 hair_tone_choice = 7
+head_choice = 4
+eye_choice = 0
+hat_colour = Color( 0.397143, 0.560837, 0.309288, 1 )
+has_hat = true
+jacket_choice = 0
+jacket_colour = Color( 0.132047, 0.334487, 0.240891, 1 )

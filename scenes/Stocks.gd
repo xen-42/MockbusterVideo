@@ -9,7 +9,6 @@ var height = 0
 var x = []
 
 onready var colour_rect = $ColorRect
-onready var line = $StockLine
 onready var label = $Node2D/Label
 
 # Variables for showing changes in the value
@@ -18,7 +17,7 @@ onready var delta_counter_node = $CounterNode/DeltaCounterNode
 onready var delta_counter_label = $CounterNode/DeltaCounterNode/DeltaCounterLabel
 var delta_counter_node_position = Vector2(0,0)
 var old_counter = 0
-var delta_fade_time = 3
+var delta_fade_time = 1.5
 
 onready var tween = $Tween
 
@@ -170,7 +169,7 @@ func _update_counter_label():
 				delta_counter_label.text = "%d\n%s" % [delta_counter, message]
 		
 		tween.interpolate_property(delta_counter_node, "position",
-			delta_counter_node_position, delta_counter_node_position + Vector2(-20, 20), delta_fade_time,
+			delta_counter_node_position, delta_counter_node_position + Vector2(-15, 15), delta_fade_time,
 			Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 		tween.interpolate_property(delta_counter_node, "modulate",
 			start_colour, end_colour, delta_fade_time,
@@ -200,7 +199,6 @@ func _update_counter_label():
 		counter_label.add_color_override("font_color", good_colour)
 
 func _update_value_done():
-	print("update value done")
 	if update_queue.size() == 0:
 		is_updating = false
 		emit_signal("update_value_done")

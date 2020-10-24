@@ -14,3 +14,6 @@ _repair = 0
 _trash = 0
 _rewind = 0
 _late = 50
+
+[node name="Sky" parent="GameScene/Window" index="0"]
+frame = 1

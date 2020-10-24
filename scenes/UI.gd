@@ -35,7 +35,7 @@ func _on_Level_ready():
 	var counter = 0
 	var first_page = true
 	for i in Global.ItemTypeEnum.values():
-		if Global.enabled[i] and Global.prices[i] > 0:
+		if Global.enabled[i] and Global.prices[i] > 0 and i != Global.ItemTypeEnum.TRASH:
 			if counter > number_per_page - 1:
 				number_of_pages += 1
 				counter = 0
@@ -68,7 +68,6 @@ func reset():
 	enter_button.disabled = true
 
 func _on_UI_fee_change(change):
-	print("Total changed!")
 	set_total(current_total + change)
 
 func _on_EnterButton_button_down():

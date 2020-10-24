@@ -4,18 +4,15 @@ var song = "song.ogg"
 var timer = 0
 
 func _ready():
+	SoundEffects.stop(Global.night_song)
 	SoundEffects.play(song)
 
 func _process(delta):
 	timer += delta
 	
 	$CanvasLayer/mockbuster_logo.rotation = PI / 24.0 * sin(PI * timer)
-	var scale = 0.05 * cos(PI * timer) + 1
+	var scale = 0.05 * cos(PI * timer) + 0.9
 	$CanvasLayer/mockbuster_logo.scale = Vector2(scale, scale)
-	
-	var rotation = PI / 24.0 * sin(PI * timer)
-	$CanvasLayer/vhs_0.rotation = rotation
-	$CanvasLayer/vhs_1.rotation = -rotation
 
 func _on_QuitButton_button_down():
 	get_tree().quit()

@@ -3,6 +3,8 @@ extends Node
 var draggable_selected = false
 var is_carrying_money = false
 
+var night_song = "night2.ogg"
+
 var endless_mode = false
 
 signal enabled_changed(type)
@@ -31,20 +33,23 @@ const day_string = [
 	"FRIDAY"
 ]
 
-const daily_fee = 20
-const daily_bonus = 10
+const daily_fee = -50
+const daily_bonus = 100
+const daily_loyalty = -10
 
-var cash = 0
-var loyalty = 50
+const starting_cash = 0
+const starting_loyalty = 50
+
+const lose_cash = -100
+const win_cash = 300
+const lose_loyalty = 0
+const win_loyalty = 100
+
+var cash = starting_cash
+var loyalty = starting_loyalty
 
 var cash_record = []
 var loyalty_record = []
-
-
-var lose_cash = -50
-var win_cash = 200
-var lose_loyalty = 0
-var win_loyalty = 100
 
 enum CustomerReaction { ACCEPT, RETRY, REFUSE, DISCOUNT, FREE, OVERCHARGE }
 
@@ -76,7 +81,7 @@ var prices = {
 	ItemTypeEnum.LATE: 0.95,
 	ItemTypeEnum.NORMAL: 0,
 	ItemTypeEnum.POSTER: 7.95,
-	ItemTypeEnum.STICKERED: 0,
+	ItemTypeEnum.STICKERED: 0.95,
 }
 var enabled = {
 	ItemTypeEnum.RETURN: false,
@@ -93,6 +98,13 @@ var enabled = {
 	ItemTypeEnum.POSTER: false,
 	ItemTypeEnum.STICKERED: false,
 }
+
+func reset():
+	cash = starting_cash
+	loyalty = starting_loyalty
+	
+	cash_record = []
+	loyalty_record = []
 
 func set_enabled(type, b):
 	enabled[type] = b
@@ -153,3 +165,30 @@ func day_calculator(day, month, year, change):
 func is_character(c):
 	var i = ord(c.to_lower())
 	return i >= ord("a") and i <= ord("z")
+
+func word_wrap(string, font, width):
+	# First we get an array of all the words
+	var words = string.split(" ")
+	var lengths = []
+	for i in range(0, words.size()):
+		var length = 0
+		for c in words[i]:
+			length += font.get_char_size(ord(c)).x
+		# Going to count lengths with a space on the end
+		length += font.get_char_size(ord(" ")).x
+		lengths.append(length)
+	
+	# Now start creating wrapped string
+	# By starting if off with the first word we avoid crashing if the first word is way too large. Oh well.
+	var wrapped_string = words[0] + " "
+	var x = lengths[0]
+	for i in range(1, words.size()):
+		x += lengths[i]
+		# If x now exceeds the width of the box, we make a new line
+		if x >= width:
+			wrapped_string += "\n" + words[i] + " "
+			x = lengths[i]
+		else:
+			wrapped_string += words[i] + " "
+	
+	return wrapped_string

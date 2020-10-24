@@ -6,11 +6,8 @@
 [node name="Level" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 _vhs = 100
-_popcorn = 0
+_popcorn = 20
 _repair = 50
 _rewind = 50
 _late = 50
 order_size = 6
-
-[node name="Sky" parent="GameScene/Window" index="0"]
-frame = 0
