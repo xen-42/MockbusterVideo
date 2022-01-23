@@ -1,6 +1,6 @@
 # Mockbuster Video
 
-![Screenshot](https://img.itch.zone/aW1hZ2UvNzIzNTY5LzQwMTYzOTUucG5n/original/krbXdj.png)
+![Screenshot](https://img.itch.zone/aW1hZ2UvNzIzNTY5LzQyNzcxNTEucG5n/original/p%2BFdLU.png)
 
 A game made in 7 days for the Brackeys 2020.2 Game Jam. The theme was "rewind". Written using the Godot game engine.
 
@@ -8,4 +8,4 @@ The player must sort VHS tapes as returns, rentals or purchases and charge the c
 
 One of my favourite things when making this game was randomly generating player models by selecting from an array or body, head, eye and ear shapes and colouring each element randomly or with a list of skin tones and hair colours.
 
-Published on [itch.io](https://nickjconnors.itch.io/mockbuster-video)
+Published on [itch.io](https://xen-dev.itch.io/mockbuster-video)
